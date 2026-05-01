@@ -1,0 +1,49 @@
+{
+  "bank_sampah": [
+    {
+      "nama": "Bank Sampah Mandiri Sejahtera",
+      "slug": "bank-sampah-mandiri-sejahtera",
+      "alamat": "Jl. Malioboro No. 12, Gedongtengen",
+      "kecamatan": "Gedongtengen",
+      "spesialisasi": ["Plastik", "Kertas"],
+      "jam": "Sen–Jum 08:00–16:00",
+      "buka": true,
+      "wa": "081234567890",
+      "rating": 4.8,
+      "reviews": 124,
+      "lat": -7.7921,
+      "lng": 110.3644,
+      "aktif": true
+    },
+    {
+      "nama": "Bank Sampah Hijau Mandiri",
+      "slug": "bank-sampah-hijau-mandiri",
+      "alamat": "Jl. Kaliurang Km 5, Depok",
+      "kecamatan": "Depok",
+      "spesialisasi": ["Botol Kaca", "Elektronik"],
+      "jam": "Sen–Sab 07:00–15:00",
+      "buka": true,
+      "wa": "081345678901",
+      "rating": 4.6,
+      "reviews": 98,
+      "lat": -7.7611,
+      "lng": 110.3917,
+      "aktif": true
+    },
+    {
+      "nama": "Sahabat Sampah Kotagede",
+      "slug": "sahabat-sampah-kotagede",
+      "alamat": "Jl. Kemasan No. 5, Kotagede",
+      "kecamatan": "Kotagede",
+      "spesialisasi": ["Logam", "Plastik"],
+      "jam": "Sel–Sab 09:00–17:00",
+      "buka": false,
+      "wa": "081456789012",
+      "rating": 4.5,
+      "reviews": 77,
+      "lat": -7.8311,
+      "lng": 110.4008,
+      "aktif": true
+    }
+  ]
+}

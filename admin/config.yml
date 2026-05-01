@@ -1,0 +1,203 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Netlify Identity
+local_backend: false
+
+# Media / file upload
+media_folder: "uploads/cms"
+public_folder: "/uploads/cms"
+
+# Site URL
+site_url: https://genhi.netlify.app
+display_url: https://genhi.netlify.app
+
+# Logo di header CMS
+logo_url: /uploads/assets-1776930587176.jpeg
+
+collections:
+
+  # ── 1. BANK SAMPAH ─────────────────────────────────────
+  - name: "bank_sampah"
+    label: "Bank Sampah"
+    label_singular: "Bank Sampah"
+    folder: "content/bank-sampah"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: nama
+    summary: "{{nama}} — {{kecamatan}}"
+    sortable_fields: ["nama", "kecamatan", "rating"]
+    view_filters:
+      - label: "Sedang Buka"
+        field: buka
+        pattern: true
+    fields:
+      - { label: "Nama Bank Sampah", name: "nama", widget: "string", hint: "Nama resmi organisasi bank sampah" }
+      - { label: "Slug / ID URL", name: "slug", widget: "string", hint: "Contoh: bank-sampah-mandiri-sejahtera (huruf kecil, tanpa spasi)" }
+      - label: "Foto Utama"
+        name: "foto"
+        widget: "image"
+        required: false
+        hint: "Foto kantor atau kegiatan bank sampah (min. 800x600px)"
+      - label: "Galeri Foto"
+        name: "galeri"
+        widget: "list"
+        required: false
+        field: { label: "Foto", name: "foto", widget: "image" }
+      - { label: "Alamat Lengkap", name: "alamat", widget: "string" }
+      - label: "Kecamatan"
+        name: "kecamatan"
+        widget: "select"
+        options:
+          - "Gedongtengen"
+          - "Jetis"
+          - "Gondokusuman"
+          - "Danurejan"
+          - "Pakualaman"
+          - "Gondomanan"
+          - "Ngampilan"
+          - "Wirobrajan"
+          - "Mantrijeron"
+          - "Kraton"
+          - "Mergangsan"
+          - "Umbulharjo"
+          - "Kotagede"
+          - "Tegalrejo"
+          - "Depok"
+      - label: "Koordinat Latitude"
+        name: "lat"
+        widget: "number"
+        value_type: "float"
+        hint: "Contoh: -7.7921 (cek di Google Maps → klik lokasi → lihat koordinat)"
+      - label: "Koordinat Longitude"
+        name: "lng"
+        widget: "number"
+        value_type: "float"
+        hint: "Contoh: 110.3644"
+      - label: "Spesialisasi Sampah"
+        name: "spesialisasi"
+        widget: "select"
+        multiple: true
+        options:
+          - "Plastik"
+          - "Kertas"
+          - "Kardus"
+          - "Logam"
+          - "Botol Kaca"
+          - "Elektronik"
+          - "Baterai"
+          - "Minyak Jelantah"
+          - "Tekstil"
+          - "Organik"
+      - { label: "Jam Operasional", name: "jam", widget: "string", hint: "Contoh: Senin–Jumat 08:00–16:00" }
+      - label: "Status Buka"
+        name: "buka"
+        widget: "boolean"
+        default: true
+        hint: "Aktifkan jika bank sampah sedang beroperasi"
+      - { label: "Nomor WhatsApp", name: "wa", widget: "string", hint: "Format: 08xxxxxxxxxx" }
+      - { label: "Email", name: "email", widget: "string", required: false }
+      - label: "Rating"
+        name: "rating"
+        widget: "number"
+        value_type: "float"
+        min: 1
+        max: 5
+        step: 0.1
+        default: 4.5
+      - label: "Jumlah Ulasan"
+        name: "reviews"
+        widget: "number"
+        default: 0
+      - label: "Deskripsi"
+        name: "deskripsi"
+        widget: "text"
+        required: false
+        hint: "Deskripsi singkat tentang bank sampah (maks. 300 karakter)"
+      - label: "Aktif di Direktori"
+        name: "aktif"
+        widget: "boolean"
+        default: true
+        hint: "Non-aktifkan untuk menyembunyikan dari katalog sementara"
+
+  # ── 2. ARTIKEL ─────────────────────────────────────────
+  - name: "artikel"
+    label: "Artikel"
+    label_singular: "Artikel"
+    folder: "content/artikel"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{title}} — {{date}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Tanggal Publikasi", name: "date", widget: "datetime", date_format: "DD MMM YYYY", time_format: false }
+      - label: "Kategori"
+        name: "tag"
+        widget: "select"
+        options:
+          - "Tips & Trik"
+          - "Kisah Sukses"
+          - "Edukasi"
+          - "Berita"
+          - "Program"
+      - label: "Thumbnail"
+        name: "thumbnail"
+        widget: "image"
+        required: false
+      - { label: "Penulis", name: "penulis", widget: "string", default: "Tim GenHi" }
+      - label: "Estimasi Baca (menit)"
+        name: "readTime"
+        widget: "number"
+        default: 5
+      - { label: "Ringkasan", name: "excerpt", widget: "text", hint: "Maks. 200 karakter, ditampilkan di kartu artikel" }
+      - { label: "Konten Artikel", name: "body", widget: "markdown" }
+      - label: "Publikasikan"
+        name: "published"
+        widget: "boolean"
+        default: false
+
+  # ── 3. STATISTIK PUBLIK ────────────────────────────────
+  - name: "statistik"
+    label: "Statistik Dashboard"
+    files:
+      - label: "Data Statistik Utama"
+        name: "main"
+        file: "content/statistik.json"
+        fields:
+          - label: "Jumlah Bank Sampah Aktif"
+            name: "statBanks"
+            widget: "string"
+            default: "47"
+          - label: "Total Sampah Terkumpul (per bulan)"
+            name: "statSampah"
+            widget: "string"
+            default: "2.4 Ton"
+            hint: "Contoh: 2.4 Ton, 1.8 Ton"
+          - label: "Jumlah Kecamatan Tertangani"
+            name: "statKec"
+            widget: "string"
+            default: "14"
+          - label: "Jumlah Nasabah Aktif"
+            name: "statNasabah"
+            widget: "string"
+            default: "3200"
+
+  # ── 4. PENGATURAN SITUS ────────────────────────────────
+  - name: "settings"
+    label: "Pengaturan Situs"
+    files:
+      - label: "Info Organisasi GenHi"
+        name: "general"
+        file: "content/settings.json"
+        fields:
+          - { label: "Nama Organisasi", name: "orgName", widget: "string", default: "GenHi" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Deskripsi Singkat", name: "description", widget: "text" }
+          - { label: "Email Kontak", name: "email", widget: "string" }
+          - { label: "Nomor WhatsApp", name: "wa", widget: "string" }
+          - { label: "Alamat Kantor", name: "alamat", widget: "string" }
+          - { label: "Jam Operasional Kantor", name: "jam", widget: "string" }
+          - { label: "Link Facebook", name: "facebook", widget: "string", required: false }
+          - { label: "Link Instagram", name: "instagram", widget: "string", required: false }
+          - { label: "Link YouTube", name: "youtube", widget: "string", required: false }
