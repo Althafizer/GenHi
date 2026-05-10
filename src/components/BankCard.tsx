@@ -1,0 +1,94 @@
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import type { BankSampah } from '@/lib/types';
+
+const SPEC_ICONS: Record<string, string> = {
+  Plastik:'🧴', Kertas:'📄', Kardus:'📦', Logam:'🔩',
+  'Botol Kaca':'🍶', Elektronik:'📱', Baterai:'🔋',
+  'Minyak Jelantah':'🛢️', Tekstil:'👕', Organik:'🌿',
+};
+
+export default function BankCard({ bank }: { bank: BankSampah }) {
+  const [hovered, setHovered] = useState(false);
+  const waUrl = `https://wa.me/62${bank.wa?.replace(/^0/, '')}`;
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`bg-white rounded-2xl overflow-hidden flex flex-col transition-all duration-300 cursor-pointer
+        ${hovered ? 'shadow-2xl shadow-green-900/15 -translate-y-1.5' : 'shadow-md shadow-green-900/6'}`}>
+      {/* Photo */}
+      <div className="h-48 bg-gradient-to-br from-green-700 to-green-500 relative overflow-hidden flex items-center justify-center">
+        {bank.foto_url ? (
+          <Image src={bank.foto_url} alt={bank.nama} fill className="object-cover" />
+        ) : (
+          <div className="flex flex-col items-center gap-2 opacity-40">
+            <span className="text-5xl">♻️</span>
+            <span className="text-white/50 text-xs font-mono tracking-widest uppercase">foto bank sampah</span>
+          </div>
+        )}
+        {bank.verified && (
+          <div className="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+            ✓ Terverifikasi
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-5 flex flex-col gap-2 flex-1">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-bold text-base text-green-900 leading-snug flex-1">{bank.nama}</h3>
+          <span className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0
+            ${bank.buka ? 'bg-green-100 text-green-700' : 'bg-red-50 text-red-600'}`}>
+            {bank.buka ? 'Buka' : 'Tutup'}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-1.5 text-gray-400 text-xs">
+          <span>📍</span><span className="line-clamp-1">{bank.alamat}</span>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 my-0.5">
+          {bank.spesialisasi.map(s => (
+            <span key={s} className="bg-green-50 text-green-700 border border-green-100 text-xs px-2.5 py-1 rounded-full font-medium">
+              {SPEC_ICONS[s] || ''} {s}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-1.5 text-gray-400 text-xs">
+          <span>🕐</span><span>{bank.jam}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-amber-400 text-sm">{'★'.repeat(Math.floor(bank.rating))}</span>
+          <span className="font-bold text-sm text-green-900">{bank.rating.toFixed(1)}</span>
+          <span className="text-gray-400 text-xs">({bank.reviews} ulasan)</span>
+        </div>
+
+        {/* Social media */}
+        {(bank.instagram || bank.facebook || bank.youtube) && (
+          <div className="flex gap-2 mt-0.5">
+            {bank.instagram && <a href={`https://instagram.com/${bank.instagram}`} target="_blank" className="text-xs text-pink-500 hover:underline">📸 IG</a>}
+            {bank.facebook && <a href={bank.facebook} target="_blank" className="text-xs text-blue-500 hover:underline">📘 FB</a>}
+            {bank.youtube && <a href={bank.youtube} target="_blank" className="text-xs text-red-500 hover:underline">▶️ YT</a>}
+          </div>
+        )}
+
+        <div className="flex gap-2 mt-auto pt-3">
+          <a href={waUrl} target="_blank"
+            className="flex-1 bg-green-600 text-white rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-500 transition-colors flex items-center justify-center gap-1.5">
+            💬 Hubungi WA
+          </a>
+          <Link href={`/bank-sampah/${bank.slug}`}
+            className="flex-1 border-2 border-green-600 text-green-600 rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-50 transition-colors">
+            Lihat Profil
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
