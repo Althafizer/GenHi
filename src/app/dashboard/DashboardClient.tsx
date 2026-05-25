@@ -35,8 +35,8 @@ export default function DashboardClient({ user, bank, stats }: {
   const toggleSpec = (s: string) => setForm(f => ({
     ...f,
     spesialisasi: f.spesialisasi.includes(s as any)
-      ? f.spesialisasi.filter((x: string) => x !== s)
-      : [...f.spesialisasi, s]
+      ? f.spesialisasi.filter(x => x !== (s as any))
+      : [...f.spesialisasi, s as any]
   }));
 
   const handleSave = async () => {
