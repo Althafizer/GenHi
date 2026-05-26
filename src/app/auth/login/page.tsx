@@ -17,6 +17,7 @@ export default function LoginPage() {
     setLoading(true); setError('');
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) { setError(error.message); setLoading(false); return; }
+    router.refresh();
     router.push('/dashboard');
   };
 
@@ -40,13 +41,13 @@ export default function LoginPage() {
             <label className="block text-green-400 text-xs font-bold mb-2">Email</label>
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
               placeholder="email@banksampaхmu.com"
-              className="w-full bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition-colors placeholder:text-white/25" />
+              className="w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition-colors placeholder:text-white/25" />
           </div>
           <div>
             <label className="block text-green-400 text-xs font-bold mb-2">Password</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} required
               placeholder="••••••••"
-              className="w-full bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition-colors placeholder:text-white/25" />
+              className="w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition-colors placeholder:text-white/25" />
           </div>
           <button type="submit" disabled={loading}
             className="w-full bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">

@@ -78,7 +78,7 @@ export default function RegisterPage() {
     router.push('/auth/success');
   };
 
-  const inputCls = "w-full bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition-colors placeholder:text-white/25";
+  const inputCls = "w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 transition-colors placeholder:text-white/25";
 
   return (
     <div className="min-h-screen bg-green-950 flex items-center justify-center px-6 py-12">
@@ -144,7 +144,7 @@ export default function RegisterPage() {
               <div>
                 <label className="block text-green-400 text-xs font-bold mb-2">Kecamatan *</label>
                 <select value={form.kecamatan} onChange={e => update('kecamatan', e.target.value)} required
-                  className="w-full bg-white/8 border border-white/12 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500">
+                  className="w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500">
                   <option value="" className="bg-green-950">Pilih kecamatan…</option>
                   {KECAMATAN.map(k => <option key={k} value={k} className="bg-green-950">{k}</option>)}
                 </select>
