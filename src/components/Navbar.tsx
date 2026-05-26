@@ -68,7 +68,7 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile drawer */}
-      <div className={`fixed inset-0 z-40 bg-green-950/97 flex flex-col items-center justify-center gap-8 transition-transform duration-500
+      <div className={`fixed inset-0 z-40 bg-green-950 flex flex-col items-center justify-center gap-8 transition-transform duration-500
         ${menuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
         {LINKS.map(l => (
           <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}

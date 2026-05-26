@@ -66,27 +66,27 @@ export default function DashboardClient({ user, bank, stats }: {
     router.refresh();
   };
 
-  const inputCls = "w-full bg-green-50 border border-green-100 rounded-xl px-4 py-3 text-green-900 text-sm outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all";
-  const labelCls = "block text-green-700 text-xs font-bold mb-1.5";
+  const inputCls = "w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all placeholder:text-white/30";
+  const labelCls = "block text-green-400 text-xs font-bold mb-1.5";
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-green-950">
       {/* Header */}
-      <header className="bg-white border-b border-green-100 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
+      <header className="bg-green-900/60 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex justify-between items-center sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-green-600 flex items-center justify-center text-white font-black font-serif">G</div>
+          <div className="w-9 h-9 rounded-xl bg-green-500 flex items-center justify-center text-white font-black font-serif">G</div>
           <div>
-            <div className="font-black text-green-900 text-sm font-serif">Dashboard GenHi</div>
-            <div className="text-green-500 text-xs">{bank?.nama || 'Bank Sampah'}</div>
+            <div className="font-black text-white text-sm font-serif">Dashboard GenHi</div>
+            <div className="text-green-400 text-xs">{bank?.nama || 'Bank Sampah'}</div>
           </div>
         </div>
         <div className="flex items-center gap-3">
           {bank?.aktif ? (
-            <span className="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full">✓ Aktif di Katalog</span>
+            <span className="bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-500/30">✓ Aktif di Katalog</span>
           ) : (
-            <span className="bg-amber-50 text-amber-600 text-xs font-bold px-3 py-1 rounded-full">⏳ Menunggu Verifikasi</span>
+            <span className="bg-amber-500/15 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20">⏳ Menunggu Verifikasi</span>
           )}
-          <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-red-500 transition-colors font-semibold">Keluar</button>
+          <button onClick={handleLogout} className="text-xs text-white/40 hover:text-red-400 transition-colors font-semibold">Keluar</button>
         </div>
       </header>
 
@@ -110,19 +110,19 @@ export default function DashboardClient({ user, bank, stats }: {
               { label: 'Pendapatan', val: `Rp ${(stats[0]?.pendapatan || 0).toLocaleString('id')}` },
               { label: 'Nasabah Baru', val: stats[0]?.nasabah_baru || 0 },
             ].map((s, i) => (
-              <div key={i} className="bg-white rounded-2xl p-4 border border-green-50">
-                <div className="text-xl font-black text-green-900 font-serif">{s.val}</div>
-                <div className="text-xs text-gray-400 mt-0.5">{s.label}</div>
+              <div key={i} className="bg-white/[8%] rounded-2xl p-4 border border-white/10">
+                <div className="text-xl font-black text-white font-serif">{s.val}</div>
+                <div className="text-xs text-white/40 mt-0.5">{s.label}</div>
               </div>
             ))}
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-green-100/50 rounded-2xl p-1 mb-6">
+        <div className="flex gap-1 bg-white/[6%] rounded-2xl p-1 mb-6 border border-white/10">
           {TABS.map(t => (
             <button key={t} onClick={() => setTab(t)}
-              className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${tab === t ? 'bg-white text-green-700 shadow-sm' : 'text-green-500 hover:text-green-700'}`}>
+              className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${tab === t ? 'bg-green-500 text-white shadow-lg shadow-green-500/25' : 'text-white/40 hover:text-white/70'}`}>
               {t}
             </button>
           ))}
@@ -130,7 +130,7 @@ export default function DashboardClient({ user, bank, stats }: {
 
         {/* Tab: Profil */}
         {tab === 'Profil' && (
-          <div className="bg-white rounded-2xl p-6 border border-green-50 flex flex-col gap-5">
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <label className={labelCls}>Nama Bank Sampah *</label>
@@ -161,7 +161,7 @@ export default function DashboardClient({ user, bank, stats }: {
                     className={`px-3 py-1.5 rounded-full text-xs font-bold border transition-all
                       ${form.spesialisasi.includes(s as any)
                         ? 'bg-green-500 text-white border-green-500'
-                        : 'bg-green-50 text-green-600 border-green-100 hover:border-green-400'}`}>
+                        : 'bg-white/[8%] text-white/60 border-white/15 hover:border-green-500/50'}`}>
                     {s}
                   </button>
                 ))}
@@ -173,31 +173,33 @@ export default function DashboardClient({ user, bank, stats }: {
                 placeholder="Ceritakan tentang bank sampah kamu…"
                 className={inputCls + ' resize-none'} />
             </div>
-            <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl border border-green-100">
-              <label className="text-sm font-bold text-green-900">Status Operasional</label>
-              <button type="button" onClick={() => update('buka', !form.buka)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${form.buka ? 'bg-green-500' : 'bg-gray-300'}`}>
-                <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.buka ? 'translate-x-6' : 'translate-x-0.5'}`} />
-              </button>
-              <span className={`text-sm font-semibold ${form.buka ? 'text-green-600' : 'text-gray-400'}`}>{form.buka ? 'Buka' : 'Tutup'}</span>
+            <div className="flex items-center justify-between p-4 bg-white/[6%] rounded-xl border border-white/10">
+              <label className="text-sm font-bold text-white">Status Operasional</label>
+              <div className="flex items-center gap-2 shrink-0">
+                <button type="button" onClick={() => update('buka', !form.buka)}
+                  className={`relative w-11 h-6 rounded-full transition-colors overflow-hidden ${form.buka ? 'bg-green-500' : 'bg-white/20'}`}>
+                  <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.buka ? 'translate-x-5' : 'translate-x-0'}`} />
+                </button>
+                <span className={`text-sm font-semibold w-10 ${form.buka ? 'text-green-400' : 'text-white/40'}`}>{form.buka ? 'Buka' : 'Tutup'}</span>
+              </div>
             </div>
           </div>
         )}
 
         {/* Tab: Foto & Media */}
         {tab === 'Foto & Media' && (
-          <div className="bg-white rounded-2xl p-6 border border-green-50 flex flex-col gap-5">
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
             <div>
               <label className={labelCls}>Foto Utama Bank Sampah</label>
               {bank?.foto_url && (
-                <div className="w-full h-48 rounded-2xl overflow-hidden mb-3 bg-green-50">
+                <div className="w-full h-48 rounded-2xl overflow-hidden mb-3 bg-white/10">
                   <img src={bank.foto_url} alt="Foto" className="w-full h-full object-cover" />
                 </div>
               )}
-              <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-green-200 rounded-2xl cursor-pointer hover:border-green-400 hover:bg-green-50 transition-all">
+              <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/20 rounded-2xl cursor-pointer hover:border-green-500/50 hover:bg-white/[4%] transition-all">
                 <span className="text-3xl mb-2">📸</span>
-                <span className="text-sm font-semibold text-green-600">Klik untuk upload foto</span>
-                <span className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP (max 5MB)</span>
+                <span className="text-sm font-semibold text-green-400">Klik untuk upload foto</span>
+                <span className="text-xs text-white/30 mt-1">PNG, JPG, WEBP (max 5MB)</span>
                 <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
               </label>
             </div>
@@ -206,7 +208,7 @@ export default function DashboardClient({ user, bank, stats }: {
 
         {/* Tab: Sosial Media */}
         {tab === 'Sosial Media' && (
-          <div className="bg-white rounded-2xl p-6 border border-green-50 flex flex-col gap-5">
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
             {[
               { label:'📸 Instagram (username)', key:'instagram', placeholder:'@banksampaumu' },
               { label:'📘 Facebook (URL halaman)', key:'facebook', placeholder:'https://facebook.com/...' },
@@ -218,30 +220,30 @@ export default function DashboardClient({ user, bank, stats }: {
                 <input value={(form as any)[f.key]} onChange={e => update(f.key, e.target.value)} placeholder={f.placeholder} className={inputCls} />
               </div>
             ))}
-            <p className="text-xs text-gray-400">Media sosial akan tampil di kartu bank sampah di katalog GenHi</p>
+            <p className="text-xs text-white/30">Media sosial akan tampil di kartu bank sampah di katalog GenHi</p>
           </div>
         )}
 
         {/* Tab: Statistik */}
         {tab === 'Statistik' && (
-          <div className="bg-white rounded-2xl p-6 border border-green-50">
-            <p className="text-sm text-gray-500 mb-4">Catat sampah yang terkumpul setiap bulan untuk ditampilkan di dashboard publik GenHi.</p>
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+            <p className="text-sm text-white/50 mb-4">Catat sampah yang terkumpul setiap bulan untuk ditampilkan di dashboard publik GenHi.</p>
             <div className="flex flex-col gap-4">
               {stats.length === 0 && (
-                <div className="text-center py-10 text-gray-400">
+                <div className="text-center py-10 text-white/30">
                   <div className="text-4xl mb-3">📊</div>
                   <p className="text-sm">Belum ada data statistik</p>
                 </div>
               )}
               {stats.map((s, i) => (
-                <div key={i} className="flex gap-4 p-4 bg-green-50 rounded-xl border border-green-100">
+                <div key={i} className="flex gap-4 p-4 bg-white/[6%] rounded-xl border border-white/10">
                   <div className="flex-1">
-                    <div className="text-xs text-gray-400 mb-1">{new Date(s.periode).toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</div>
-                    <div className="font-bold text-green-900">{s.sampah_kg} kg sampah</div>
+                    <div className="text-xs text-white/40 mb-1">{new Date(s.periode).toLocaleDateString('id-ID',{month:'long',year:'numeric'})}</div>
+                    <div className="font-bold text-white">{s.sampah_kg} kg sampah</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-gray-400 mb-1">Pendapatan</div>
-                    <div className="font-bold text-green-600">Rp {s.pendapatan?.toLocaleString('id')}</div>
+                    <div className="text-xs text-white/40 mb-1">Pendapatan</div>
+                    <div className="font-bold text-green-400">Rp {s.pendapatan?.toLocaleString('id')}</div>
                   </div>
                 </div>
               ))}
@@ -254,7 +256,7 @@ export default function DashboardClient({ user, bank, stats }: {
           <div className="mt-6 flex justify-end">
             <button onClick={handleSave} disabled={saving}
               className={`px-8 py-3.5 rounded-2xl font-bold text-sm transition-all
-                ${saved ? 'bg-green-100 text-green-600' : 'bg-green-500 text-white hover:bg-green-400 shadow-lg shadow-green-500/25'}
+                ${saved ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-green-500 text-white hover:bg-green-400 shadow-lg shadow-green-500/25'}
                 disabled:opacity-50`}>
               {saving ? 'Menyimpan…' : saved ? '✓ Tersimpan!' : 'Simpan Perubahan'}
             </button>
