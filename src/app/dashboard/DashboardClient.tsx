@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { BankSampah } from '@/lib/types';
 
 const SPESIALISASI = ['Plastik','Kertas','Kardus','Logam','Botol Kaca','Elektronik','Baterai','Minyak Jelantah','Tekstil','Organik'];
+const KECAMATAN = ['Gedongtengen','Jetis','Gondokusuman','Danurejan','Pakualaman','Gondomanan','Ngampilan','Wirobrajan','Mantrijeron','Kraton','Mergangsan','Umbulharjo','Kotagede','Tegalrejo','Depok'];
 const TABS = ['Profil','Foto & Media','Sosial Media','Statistik'];
 
 export default function DashboardClient({ user, bank, stats }: {
@@ -18,7 +20,7 @@ export default function DashboardClient({ user, bank, stats }: {
   const [form, setForm] = useState({
     nama: bank?.nama || '',
     alamat: bank?.alamat || '',
-    kecamatan: bank?.kecamatan || '',
+    kecamatan: bank?.kecamatan || 'Gedongtengen',
     wa: bank?.wa || '',
     email: bank?.email || '',
     jam: bank?.jam || '',
@@ -86,6 +88,12 @@ export default function DashboardClient({ user, bank, stats }: {
           ) : (
             <span className="bg-amber-500/15 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20">⏳ Menunggu Verifikasi</span>
           )}
+          {bank?.slug && (
+            <Link href={`/bank-sampah/${bank.slug}`} target="_blank"
+              className="text-xs text-green-400 hover:text-green-300 transition-colors font-semibold border border-green-500/30 px-3 py-1 rounded-full hover:bg-green-500/10">
+              Lihat Profil ↗
+            </Link>
+          )}
           <button onClick={handleLogout} className="text-xs text-white/40 hover:text-red-400 transition-colors font-semibold">Keluar</button>
         </div>
       </header>
@@ -145,12 +153,19 @@ export default function DashboardClient({ user, bank, stats }: {
                 <input value={form.alamat} onChange={e => update('alamat', e.target.value)} className={inputCls} />
               </div>
               <div>
-                <label className={labelCls}>Email</label>
-                <input type="email" value={form.email} onChange={e => update('email', e.target.value)} className={inputCls} />
+                <label className={labelCls}>Kecamatan *</label>
+                <select value={form.kecamatan} onChange={e => update('kecamatan', e.target.value)}
+                  className={inputCls + ' cursor-pointer'}>
+                  {KECAMATAN.map(k => <option key={k} value={k} className="bg-green-900">{k}</option>)}
+                </select>
               </div>
               <div>
                 <label className={labelCls}>Jam Operasional</label>
                 <input value={form.jam} onChange={e => update('jam', e.target.value)} className={inputCls} placeholder="Sen–Jum 08:00–16:00" />
+              </div>
+              <div>
+                <label className={labelCls}>Email</label>
+                <input type="email" value={form.email} onChange={e => update('email', e.target.value)} className={inputCls} />
               </div>
             </div>
             <div>
