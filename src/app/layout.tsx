@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 
@@ -10,7 +10,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'GenHi — Direktori Bank Sampah Yogyakarta',
   description: 'Platform digital bank sampah Kota Yogyakarta. Digital Collaboration. Social Empowerment. Sustainable Economy.',
-  manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
   themeColor: '#1a5c2e',
 };
 

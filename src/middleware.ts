@@ -21,6 +21,8 @@ export async function middleware(request: NextRequest) {
     }
   );
 
+  // Refresh session cookie only — page-level auth checks handle redirects
+  // (server-side redirect from middleware causes race conditions right after login)
   await supabase.auth.getUser();
 
   return supabaseResponse;

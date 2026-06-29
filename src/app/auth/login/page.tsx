@@ -12,10 +12,56 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true); setError('');
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { setError(error.message); setLoading(false); return; }
-    window.location.href = '/dashboard';
+
+    try {
+      const supabase = createClient();
+      console.log('[login] signing in...');
+
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (signInError) {
+        console.error('[login] sign in error:', signInError);
+        setError(signInError.message);
+        setLoading(false);
+        return;
+      }
+
+      console.log('[login] signed in, user:', data.user?.id);
+
+      if (!data.user) {
+        setError('Login berhasil tapi tidak ada user. Cek apakah email sudah dikonfirmasi.');
+        setLoading(false);
+        return;
+      }
+
+      console.log('[login] querying profile...');
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single();
+
+      if (profileError) {
+        console.error('[login] profile query error:', profileError);
+        setError('Gagal mengambil profil: ' + profileError.message);
+        setLoading(false);
+        return;
+      }
+
+      console.log('[login] profile role:', profile?.role);
+
+      const target =
+        profile?.role === 'admin' ? '/admin' :
+        profile?.role === 'nasabah' ? '/nasabah' :
+        '/dashboard';
+
+      console.log('[login] redirecting to:', target);
+      window.location.href = target;
+    } catch (err: any) {
+      console.error('[login] unexpected error:', err);
+      setError('Terjadi kesalahan: ' + (err?.message || String(err)));
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,10 +96,19 @@ export default function LoginPage() {
             className="w-full bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
             {loading ? 'Memproses…' : 'Masuk →'}
           </button>
-          <p className="text-center text-green-500/50 text-xs">
-            Belum punya akun?{' '}
-            <Link href="/auth/register" className="text-green-400 hover:underline font-semibold">Daftar di sini</Link>
-          </p>
+          <div className="border-t border-white/10 pt-4 flex flex-col gap-2">
+            <p className="text-center text-green-500/50 text-xs">Belum punya akun?</p>
+            <div className="grid grid-cols-2 gap-2">
+              <Link href="/auth/register/nasabah"
+                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all">
+                ♻️ Daftar Nasabah
+              </Link>
+              <Link href="/auth/register"
+                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all">
+                🏦 Daftar Bank Sampah
+              </Link>
+            </div>
+          </div>
         </form>
       </div>
     </div>

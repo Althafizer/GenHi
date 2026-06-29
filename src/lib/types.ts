@@ -66,6 +66,30 @@ export interface Profile {
   id: string;
   full_name: string | null;
   avatar_url: string | null;
-  role: 'admin' | 'bank_sampah';
+  role: 'admin' | 'bank_sampah' | 'nasabah';
+  created_at: string;
+}
+
+export interface NasabahProfile {
+  id: string;
+  full_name: string;
+  phone_number: string | null;
+  created_at: string;
+}
+
+export interface Saldo {
+  id: string;
+  user_id: string;
+  balance: number;
+  updated_at: string;
+}
+
+export interface QrToken {
+  id: string;
+  user_id: string;
+  token: string;
+  expires_at: string;
+  is_used: boolean;
+  used_at: string | null;
   created_at: string;
 }

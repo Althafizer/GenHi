@@ -7,7 +7,6 @@ const LINKS = [
   { href: '#katalog', label: 'Katalog' },
   { href: '#peta', label: 'Peta' },
   { href: '#artikel', label: 'Artikel' },
-  { href: '#daftar', label: 'Daftar' },
 ];
 
 export default function Navbar() {
@@ -48,10 +47,10 @@ export default function Navbar() {
               {l.label}
             </a>
           ))}
-          <Link href="/auth/register"
+          <a href="#daftar"
             className="bg-green-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-green-400 transition-colors shadow-lg shadow-green-500/30">
-            + Daftar Bank Sampah
-          </Link>
+            Mulai Gratis →
+          </a>
           <Link href="/auth/login"
             className={`text-sm font-semibold transition-colors ${scrolled ? 'text-green-700' : 'text-white/70'}`}>
             Masuk
@@ -76,10 +75,10 @@ export default function Navbar() {
             {l.label}
           </a>
         ))}
-        <Link href="/auth/register" onClick={() => setMenuOpen(false)}
+        <a href="#daftar" onClick={() => setMenuOpen(false)}
           className="bg-green-500 text-white px-9 py-4 rounded-2xl text-xl font-black mt-2">
-          + Daftar Bank Sampah
-        </Link>
+          Mulai Gratis →
+        </a>
         <Link href="/auth/login" onClick={() => setMenuOpen(false)}
           className="text-white/60 text-base font-semibold">
           Sudah punya akun? Masuk
@@ -93,7 +92,7 @@ export default function Navbar() {
           { href: '#katalog', icon: '📋', label: 'Katalog' },
           { href: '#peta', icon: '🗺️', label: 'Peta' },
           { href: '#artikel', icon: '📰', label: 'Artikel' },
-          { href: '/auth/register', icon: '➕', label: 'Daftar' },
+          { href: '#daftar', icon: '➕', label: 'Daftar' },
         ].map(item => (
           <a key={item.href} href={item.href}
             className="flex flex-col items-center gap-1 px-3 py-1 rounded-xl hover:bg-green-50">

@@ -183,10 +183,18 @@ export default function RegisterPage() {
               </div>
             </>
           )}
-          <p className="text-center text-green-500/50 text-xs">
-            Sudah punya akun?{' '}
-            <Link href="/auth/login" className="text-green-400 hover:underline font-semibold">Masuk di sini</Link>
-          </p>
+          <div className="border-t border-white/10 pt-4 flex flex-col gap-1.5 text-center">
+            <p className="text-green-500/50 text-xs">
+              Sudah punya akun?{' '}
+              <Link href="/auth/login" className="text-green-400 hover:underline font-semibold">Masuk di sini</Link>
+            </p>
+            <p className="text-white/20 text-xs">
+              Bukan pengelola Bank Sampah?{' '}
+              <Link href="/auth/register/nasabah" className="text-white/40 hover:text-green-400 transition-colors">
+                Daftar sebagai Nasabah →
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
     </div>

@@ -7,6 +7,8 @@
 create extension if not exists "uuid-ossp";
 
 -- ── ENUM TYPES ───────────────────────────────────────────
+create type role_enum as enum ('admin', 'bank_sampah', 'nasabah');
+
 create type kecamatan_enum as enum (
   'Gedongtengen','Jetis','Gondokusuman','Danurejan','Pakualaman',
   'Gondomanan','Ngampilan','Wirobrajan','Mantrijeron','Kraton',
@@ -23,7 +25,7 @@ create table profiles (
   id          uuid references auth.users(id) on delete cascade primary key,
   full_name   text,
   avatar_url  text,
-  role        text default 'bank_sampah' check (role in ('admin','bank_sampah')),
+  role        role_enum default 'bank_sampah',
   created_at  timestamptz default now()
 );
 
@@ -31,11 +33,12 @@ create table profiles (
 create or replace function handle_new_user()
 returns trigger language plpgsql security definer as $$
 begin
-  insert into profiles (id, full_name, avatar_url)
+  insert into profiles (id, full_name, avatar_url, role)
   values (
     new.id,
     new.raw_user_meta_data->>'full_name',
-    new.raw_user_meta_data->>'avatar_url'
+    new.raw_user_meta_data->>'avatar_url',
+    'bank_sampah'::role_enum
   );
   return new;
 end;
