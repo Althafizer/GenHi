@@ -12,6 +12,7 @@ export default function ArticlesSection({ artikels }: { artikels: Artikel[] }) {
     { id:'3', judul:'Kenali Jenis Sampah yang Bernilai Tinggi di Pasaran', excerpt:'Tidak semua sampah sama nilainya. Beberapa jenis material memiliki harga yang cukup tinggi di pengepul.', tag:'Edukasi', read_time:5, published_at:'2026-04-05', thumbnail_url:null },
   ];
   const items = artikels.length > 0 ? artikels : fallback;
+  const isFallback = artikels.length === 0;
 
   return (
     <section id="artikel" className="bg-white py-20">
@@ -29,10 +30,16 @@ export default function ArticlesSection({ artikels }: { artikels: Artikel[] }) {
           {items.map((a: any, i: number) => {
             const CardIcon = CARD_ICONS[i % CARD_ICONS.length];
             return (
-              <div key={a.id} className="bg-white border border-green-50 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-green-900/8 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-                <div className={`h-48 flex items-center justify-center
+              <Link key={a.id} href={isFallback ? '/artikel' : `/artikel/${a.slug}`}
+                className="bg-white border border-green-50 rounded-2xl overflow-hidden hover:shadow-xl hover:shadow-green-900/8 hover:-translate-y-1 transition-all duration-300">
+                <div className={`h-48 flex items-center justify-center overflow-hidden
                   ${i===0?'bg-gradient-to-br from-green-700 to-green-500':i===1?'bg-gradient-to-br from-green-800 to-green-600':'bg-gradient-to-br from-green-600 to-green-400'}`}>
-                  <CardIcon className="w-12 h-12 text-white" />
+                  {a.thumbnail_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={a.thumbnail_url} alt={a.judul} className="w-full h-full object-cover" />
+                  ) : (
+                    <CardIcon className="w-12 h-12 text-white" />
+                  )}
                 </div>
                 <div className="p-5">
                   <div className="flex justify-between mb-3">
@@ -46,7 +53,7 @@ export default function ArticlesSection({ artikels }: { artikels: Artikel[] }) {
                     <span className="text-green-600 text-xs font-bold flex items-center gap-1">Baca <FiArrowRight className="w-3 h-3" /></span>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>

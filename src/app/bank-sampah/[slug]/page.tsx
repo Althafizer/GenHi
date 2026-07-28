@@ -6,7 +6,7 @@ import type { ComponentType } from 'react';
 import {
   FiArrowLeft, FiCheck, FiMapPin, FiClock, FiMessageCircle, FiMail, FiGlobe,
   FiSmartphone, FiBattery, FiDroplet, FiFileText, FiBox, FiTool,
-  FiInstagram, FiFacebook, FiYoutube, FiArrowDown, FiStar,
+  FiInstagram, FiFacebook, FiYoutube, FiArrowDown,
 } from 'react-icons/fi';
 import { IoShirtOutline, IoWineOutline, IoLeafOutline } from 'react-icons/io5';
 import { BiRecycle } from 'react-icons/bi';
@@ -117,7 +117,7 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
             {bank.deskripsi && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 <h2 className="font-black text-green-800 font-serif text-lg mb-3">Tentang Kami</h2>
-                <p className="text-gray-600 text-sm leading-relaxed">{bank.deskripsi}</p>
+                <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{bank.deskripsi}</p>
               </div>
             )}
 
@@ -221,13 +221,6 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
                     <span className="text-gray-600 break-all">{bank.email}</span>
                   </div>
                 )}
-              </div>
-              <div className="flex items-center gap-2 mt-1 pt-3 border-t border-gray-50">
-                <span className="text-amber-400 flex items-center gap-0.5">
-                  {Array.from({ length: Math.floor(bank.rating) }).map((_, i) => <FiStar key={i} className="w-3.5 h-3.5 fill-current" />)}
-                </span>
-                <span className="font-bold text-gray-800 text-sm">{Number(bank.rating).toFixed(1)}</span>
-                <span className="text-gray-400 text-xs">({bank.reviews} ulasan)</span>
               </div>
             </div>
 
