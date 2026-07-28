@@ -5,11 +5,18 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { BankSampah } from '@/lib/types';
 import LocationPicker from '@/components/LocationPicker';
-import { FiCheck, FiClock, FiExternalLink, FiCamera, FiBarChart2, FiInstagram, FiFacebook, FiYoutube, FiGlobe } from 'react-icons/fi';
+import { FiCheck, FiClock, FiExternalLink, FiCamera, FiBarChart2, FiInstagram, FiFacebook, FiYoutube, FiGlobe, FiTrash2, FiPlus, FiLock } from 'react-icons/fi';
 
 const SPESIALISASI = ['Plastik','Kertas','Kardus','Logam','Botol Kaca','Elektronik','Baterai','Minyak Jelantah','Tekstil','Organik'];
 const KECAMATAN = ['Gedongtengen','Jetis','Gondokusuman','Danurejan','Pakualaman','Gondomanan','Ngampilan','Wirobrajan','Mantrijeron','Kraton','Mergangsan','Umbulharjo','Kotagede','Tegalrejo','Depok'];
-const TABS = ['Profil','Lokasi','Foto & Media','Sosial Media','Statistik'];
+const TABS = ['Profil','Lokasi','Foto & Media','Sosial Media','Statistik','Akun'];
+
+// Storage public URLs look like ".../object/public/bank-sampah-photos/<path>" — extract <path> for deletion.
+function storagePathFromUrl(url: string): string | null {
+  const marker = '/bank-sampah-photos/';
+  const idx = url.indexOf(marker);
+  return idx === -1 ? null : url.slice(idx + marker.length);
+}
 
 export default function DashboardClient({ user, bank, stats }: {
   user: any; bank: BankSampah | null; stats: any[];
@@ -19,6 +26,13 @@ export default function DashboardClient({ user, bank, stats }: {
   const [tab, setTab] = useState('Profil');
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [fotoUrl, setFotoUrl] = useState(bank?.foto_url || null);
+  const [galeri, setGaleri] = useState<string[]>(bank?.galeri || []);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [pwForm, setPwForm] = useState({ password: '', confirm: '' });
+  const [pwSaving, setPwSaving] = useState(false);
+  const [pwSaved, setPwSaved] = useState(false);
+  const [pwError, setPwError] = useState('');
   const [form, setForm] = useState({
     nama: bank?.nama || '',
     alamat: bank?.alamat || '',
@@ -69,7 +83,54 @@ export default function DashboardClient({ user, bank, stats }: {
     if (upErr) return;
     const { data } = supabase.storage.from('bank-sampah-photos').getPublicUrl(path);
     await supabase.from('bank_sampah').update({ foto_url: data.publicUrl }).eq('user_id', user.id);
-    router.refresh();
+    setFotoUrl(data.publicUrl);
+  };
+
+  const handleDeleteMainPhoto = async () => {
+    if (!bank || !fotoUrl) return;
+    const path = storagePathFromUrl(fotoUrl);
+    if (path) await supabase.storage.from('bank-sampah-photos').remove([path]);
+    await supabase.from('bank_sampah').update({ foto_url: null }).eq('user_id', user.id);
+    setFotoUrl(null);
+  };
+
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file || !bank) return;
+    setGalleryUploading(true);
+    const ext = file.name.split('.').pop();
+    const path = `${user.id}/galeri/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error: upErr } = await supabase.storage.from('bank-sampah-photos').upload(path, file);
+    if (upErr) { setGalleryUploading(false); return; }
+    const { data } = supabase.storage.from('bank-sampah-photos').getPublicUrl(path);
+    const nextGaleri = [...galeri, data.publicUrl];
+    const { error } = await supabase.from('bank_sampah').update({ galeri: nextGaleri }).eq('user_id', user.id);
+    setGalleryUploading(false);
+    if (!error) setGaleri(nextGaleri);
+  };
+
+  const handleDeleteGalleryPhoto = async (url: string) => {
+    if (!bank) return;
+    const nextGaleri = galeri.filter(u => u !== url);
+    const { error } = await supabase.from('bank_sampah').update({ galeri: nextGaleri }).eq('user_id', user.id);
+    if (error) return;
+    setGaleri(nextGaleri);
+    const path = storagePathFromUrl(url);
+    if (path) await supabase.storage.from('bank-sampah-photos').remove([path]);
+  };
+
+  const handleChangePassword = async () => {
+    setPwError('');
+    if (pwForm.password.length < 6) { setPwError('Password minimal 6 karakter'); return; }
+    if (pwForm.password !== pwForm.confirm) { setPwError('Konfirmasi password tidak cocok'); return; }
+    setPwSaving(true);
+    const { error } = await supabase.auth.updateUser({ password: pwForm.password });
+    setPwSaving(false);
+    if (error) { setPwError('Gagal mengubah password'); return; }
+    setPwForm({ password: '', confirm: '' });
+    setPwSaved(true);
+    setTimeout(() => setPwSaved(false), 2500);
   };
 
   const inputCls = "w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all placeholder:text-white/30";
@@ -219,20 +280,51 @@ export default function DashboardClient({ user, bank, stats }: {
 
         {/* Tab: Foto & Media */}
         {tab === 'Foto & Media' && (
-          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-6">
             <div>
               <label className={labelCls}>Foto Utama Bank Sampah</label>
-              {bank?.foto_url && (
-                <div className="w-full h-48 rounded-2xl overflow-hidden mb-3 bg-white/10">
-                  <img src={bank.foto_url} alt="Foto" className="w-full h-full object-cover" />
+              {fotoUrl && (
+                <div className="relative w-full h-48 rounded-2xl overflow-hidden mb-3 bg-white/10 group">
+                  <img src={fotoUrl} alt="Foto" className="w-full h-full object-cover" />
+                  <button type="button" onClick={handleDeleteMainPhoto}
+                    className="absolute top-2 right-2 w-8 h-8 rounded-lg bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80 transition-colors">
+                    <FiTrash2 className="w-4 h-4" />
+                  </button>
                 </div>
               )}
               <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/20 rounded-2xl cursor-pointer hover:border-green-500/50 hover:bg-white/[4%] transition-all">
                 <FiCamera className="w-8 h-8 mb-2 text-green-400" />
-                <span className="text-sm font-semibold text-green-400">Klik untuk upload foto</span>
+                <span className="text-sm font-semibold text-green-400">{fotoUrl ? 'Ganti foto' : 'Klik untuk upload foto'}</span>
                 <span className="text-xs text-white/30 mt-1">PNG, JPG, WEBP (max 5MB)</span>
                 <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
               </label>
+            </div>
+
+            <div>
+              <label className={labelCls}>Galeri Foto</label>
+              <p className="text-xs text-white/30 mb-3">Tambahkan beberapa foto suasana bank sampahmu — akan tampil di halaman profil publik.</p>
+              <div className="grid grid-cols-3 gap-3">
+                {galeri.map(url => (
+                  <div key={url} className="relative aspect-square rounded-xl overflow-hidden bg-white/10 group">
+                    <img src={url} alt="Galeri" className="w-full h-full object-cover" />
+                    <button type="button" onClick={() => handleDeleteGalleryPhoto(url)}
+                      className="absolute top-1.5 right-1.5 w-7 h-7 rounded-lg bg-black/60 text-white flex items-center justify-center hover:bg-red-500/80 transition-colors">
+                      <FiTrash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+                <label className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:border-green-500/50 hover:bg-white/[4%] transition-all">
+                  {galleryUploading ? (
+                    <span className="text-xs text-white/40">Mengupload…</span>
+                  ) : (
+                    <>
+                      <FiPlus className="w-6 h-6 mb-1 text-green-400" />
+                      <span className="text-xs font-semibold text-green-400">Tambah</span>
+                    </>
+                  )}
+                  <input type="file" accept="image/*" className="hidden" onChange={handleGalleryUpload} disabled={galleryUploading} />
+                </label>
+              </div>
             </div>
           </div>
         )}
@@ -282,8 +374,33 @@ export default function DashboardClient({ user, bank, stats }: {
           </div>
         )}
 
+        {/* Tab: Akun */}
+        {tab === 'Akun' && (
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-5 max-w-md">
+            <div>
+              <label className={labelCls + ' flex items-center gap-1.5'}><FiLock className="w-3.5 h-3.5" /> Password Baru</label>
+              <input type="password" value={pwForm.password}
+                onChange={e => setPwForm(f => ({ ...f, password: e.target.value }))}
+                placeholder="Minimal 6 karakter" className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Konfirmasi Password</label>
+              <input type="password" value={pwForm.confirm}
+                onChange={e => setPwForm(f => ({ ...f, confirm: e.target.value }))}
+                placeholder="Ulangi password baru" className={inputCls} />
+            </div>
+            {pwError && <p className="text-xs text-red-400">{pwError}</p>}
+            <button type="button" onClick={handleChangePassword} disabled={pwSaving || !pwForm.password}
+              className={`self-start px-6 py-3 rounded-2xl font-bold text-sm transition-all
+                ${pwSaved ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-green-500 text-white hover:bg-green-400 shadow-lg shadow-green-500/25'}
+                disabled:opacity-50`}>
+              {pwSaving ? 'Menyimpan…' : pwSaved ? <span className="inline-flex items-center gap-1.5"><FiCheck className="w-4 h-4" /> Password diubah!</span> : 'Ubah Password'}
+            </button>
+          </div>
+        )}
+
         {/* Save button */}
-        {tab !== 'Statistik' && (
+        {tab !== 'Statistik' && tab !== 'Foto & Media' && tab !== 'Akun' && (
           <div className="mt-6 flex justify-end">
             <button onClick={handleSave} disabled={saving}
               className={`px-8 py-3.5 rounded-2xl font-bold text-sm transition-all
