@@ -1,30 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import type { BankSampah } from '@/lib/types';
-
-declare global {
-  interface Window {
-    google?: any;
-    __genhiMapsLoading?: Promise<void>;
-  }
-}
-
-function loadGoogleMaps(apiKey: string): Promise<void> {
-  if (typeof window === 'undefined') return Promise.resolve();
-  if (window.google?.maps) return Promise.resolve();
-  if (window.__genhiMapsLoading) return window.__genhiMapsLoading;
-
-  window.__genhiMapsLoading = new Promise<void>((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=marker&v=weekly`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('Failed to load Google Maps'));
-    document.head.appendChild(script);
-  });
-  return window.__genhiMapsLoading;
-}
+import { loadGoogleMaps } from '@/lib/googleMaps';
 
 export default function MapSection({ banks }: { banks: BankSampah[] }) {
   const containerRef = useRef<HTMLDivElement>(null);

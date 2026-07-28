@@ -4,10 +4,11 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { BankSampah } from '@/lib/types';
+import LocationPicker from '@/components/LocationPicker';
 
 const SPESIALISASI = ['Plastik','Kertas','Kardus','Logam','Botol Kaca','Elektronik','Baterai','Minyak Jelantah','Tekstil','Organik'];
 const KECAMATAN = ['Gedongtengen','Jetis','Gondokusuman','Danurejan','Pakualaman','Gondomanan','Ngampilan','Wirobrajan','Mantrijeron','Kraton','Mergangsan','Umbulharjo','Kotagede','Tegalrejo','Depok'];
-const TABS = ['Profil','Foto & Media','Sosial Media','Statistik'];
+const TABS = ['Profil','Lokasi','Foto & Media','Sosial Media','Statistik'];
 
 export default function DashboardClient({ user, bank, stats }: {
   user: any; bank: BankSampah | null; stats: any[];
@@ -31,6 +32,8 @@ export default function DashboardClient({ user, bank, stats }: {
     facebook: bank?.facebook || '',
     youtube: bank?.youtube || '',
     website: bank?.website || '',
+    lat: bank?.lat ?? null as number | null,
+    lng: bank?.lng ?? null as number | null,
   });
 
   const update = (k: string, v: any) => setForm(f => ({ ...f, [k]: v }));
@@ -198,6 +201,18 @@ export default function DashboardClient({ user, bank, stats }: {
                 <span className={`text-sm font-semibold w-10 ${form.buka ? 'text-green-400' : 'text-white/40'}`}>{form.buka ? 'Buka' : 'Tutup'}</span>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Tab: Lokasi */}
+        {tab === 'Lokasi' && (
+          <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+            <LocationPicker
+              lat={form.lat}
+              lng={form.lng}
+              onChange={(lat, lng) => setForm(f => ({ ...f, lat, lng }))}
+              onClear={() => setForm(f => ({ ...f, lat: null, lng: null }))}
+            />
           </div>
         )}
 
