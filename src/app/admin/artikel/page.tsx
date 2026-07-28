@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { Artikel } from '@/lib/types';
+import { FiFileText, FiArrowRight } from 'react-icons/fi';
 
 export default function AdminArtikelPage() {
   const [artikels, setArtikels] = useState<Artikel[]>([]);
@@ -91,11 +92,11 @@ export default function AdminArtikelPage() {
         <div className="text-slate-500 text-sm py-10 text-center">Memuat data…</div>
       ) : filtered.length === 0 ? (
         <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl py-16 text-center">
-          <div className="text-4xl mb-3">📰</div>
+          <FiFileText className="w-10 h-10 mx-auto mb-3 text-slate-500" />
           <p className="text-slate-400 text-sm font-semibold">Belum ada artikel</p>
           <Link href="/admin/artikel/new"
-            className="mt-4 inline-block px-4 py-2 bg-amber-500/15 text-amber-400 text-sm font-bold rounded-xl border border-amber-500/25 hover:bg-amber-500/25 transition-colors">
-            Buat artikel pertama →
+            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500/15 text-amber-400 text-sm font-bold rounded-xl border border-amber-500/25 hover:bg-amber-500/25 transition-colors">
+            Buat artikel pertama <FiArrowRight className="w-4 h-4" />
           </Link>
         </div>
       ) : (

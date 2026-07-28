@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import type { GlobalStats } from '@/lib/types';
+import { FiSearch, FiHome, FiMap, FiStar } from 'react-icons/fi';
 
 export default function Hero({ stats }: { stats: GlobalStats }) {
   const [loaded, setLoaded] = useState(false);
@@ -44,7 +45,7 @@ export default function Hero({ stats }: { stats: GlobalStats }) {
           <div className={`flex gap-3 flex-wrap ${loaded ? 'animate-fade-up [animation-delay:450ms]' : 'opacity-0'}`}
             style={{ animationFillMode: 'forwards' }}>
             <div className="flex-1 min-w-[280px] flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl px-5 py-4">
-              <span className="text-xl">🔍</span>
+              <FiSearch className="w-5 h-5 text-white/70 shrink-0" />
               <input placeholder="Cari bank sampah atau kecamatan…"
                 className="bg-transparent border-none outline-none text-white text-sm w-full placeholder:text-white/35"
                 onKeyDown={e => { if(e.key==='Enter') document.getElementById('katalog')?.scrollIntoView({behavior:'smooth'}); }}
@@ -59,13 +60,13 @@ export default function Hero({ stats }: { stats: GlobalStats }) {
           {/* Stats pills */}
           <div className={`flex gap-6 mt-9 flex-wrap ${loaded ? 'animate-fade-up [animation-delay:600ms]' : 'opacity-0'}`}
             style={{ animationFillMode: 'forwards' }}>
-            {[
-              ['🏦', `${stats.total_bank_aktif || 47} Bank Sampah`],
-              ['🗺️', `${stats.total_kecamatan || 14} Kecamatan`],
-              ['⭐', 'Rating Terverifikasi'],
-            ].map(([icon, text]) => (
+            {([
+              [FiHome, `${stats.total_bank_aktif || 47} Bank Sampah`],
+              [FiMap, `${stats.total_kecamatan || 14} Kecamatan`],
+              [FiStar, 'Rating Terverifikasi'],
+            ] as const).map(([Icon, text]) => (
               <div key={String(text)} className="flex items-center gap-2 text-white/65 text-sm font-medium">
-                <span>{icon}</span><span>{text}</span>
+                <Icon className="w-4 h-4" /><span>{text}</span>
               </div>
             ))}
           </div>

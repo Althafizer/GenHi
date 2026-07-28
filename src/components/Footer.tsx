@@ -1,12 +1,16 @@
 import Link from 'next/link';
+import { FiMail, FiSmartphone, FiMapPin, FiClock, FiFacebook, FiInstagram, FiTwitter, FiYoutube } from 'react-icons/fi';
+import { IoLeafOutline } from 'react-icons/io5';
+
+const SOCIAL_ICONS = [FiFacebook, FiInstagram, FiTwitter, FiYoutube];
 
 export default function Footer() {
   const nav = ['Tentang GenHi','Katalog Bank Sampah','Peta Interaktif','Artikel','Daftar Bank Sampah'];
   const kontak = [
-    { icon:'📧', text:'info@genhi.id' },
-    { icon:'📱', text:'+62 812-3456-7890' },
-    { icon:'📍', text:'Jl. Malioboro No. 1, Yogyakarta 55213' },
-    { icon:'🕐', text:'Senin–Jumat, 09:00–17:00 WIB' },
+    { icon: FiMail, text:'info@genhi.id' },
+    { icon: FiSmartphone, text:'+62 812-3456-7890' },
+    { icon: FiMapPin, text:'Jl. Malioboro No. 1, Yogyakarta 55213' },
+    { icon: FiClock, text:'Senin–Jumat, 09:00–17:00 WIB' },
   ];
   return (
     <footer id="kontak" className="bg-green-950 pt-16 pb-8">
@@ -19,8 +23,8 @@ export default function Footer() {
             </div>
             <p className="text-green-700 text-sm leading-relaxed max-w-[240px]">Asosiasi bank sampah digital di Kota Yogyakarta.</p>
             <div className="flex gap-3 mt-4">
-              {['📘','📸','🐦','▶️'].map((icon,i) => (
-                <a key={i} href="#" className="w-9 h-9 bg-white/6 rounded-lg flex items-center justify-center text-base hover:bg-white/12 transition-colors">{icon}</a>
+              {SOCIAL_ICONS.map((Icon,i) => (
+                <a key={i} href="#" className="w-9 h-9 bg-white/6 rounded-lg flex items-center justify-center text-white hover:bg-white/12 transition-colors"><Icon className="w-4 h-4" /></a>
               ))}
             </div>
           </div>
@@ -37,7 +41,7 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               {kontak.map((c,i) => (
                 <div key={i} className="flex gap-2.5 items-start">
-                  <span className="text-base mt-0.5">{c.icon}</span>
+                  <c.icon className="w-4 h-4 mt-0.5 text-green-500 shrink-0" />
                   <span className="text-green-700 text-sm leading-snug">{c.text}</span>
                 </div>
               ))}
@@ -54,7 +58,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-white/5 pt-6 flex justify-between flex-wrap gap-3">
           <p className="text-green-800 text-xs">© 2026 GenHi — Gerakan Hijau Indonesia. All rights reserved.</p>
-          <p className="text-green-800 text-xs">Made with 🌿 for Yogyakarta</p>
+          <p className="text-green-800 text-xs flex items-center gap-1">Made with <IoLeafOutline className="w-3.5 h-3.5" /> for Yogyakarta</p>
         </div>
       </div>
     </footer>

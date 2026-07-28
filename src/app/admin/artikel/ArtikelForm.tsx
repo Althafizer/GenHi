@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import type { Artikel } from '@/lib/types';
+import { FiArrowLeft, FiImage } from 'react-icons/fi';
 
 const TAGS = ['Tips & Trik', 'Kisah Sukses', 'Edukasi', 'Berita', 'Program'];
 
@@ -103,7 +104,7 @@ export default function ArtikelForm({ initialData, mode }: Props) {
   return (
     <div className="p-8 max-w-3xl">
       <div className="flex items-center gap-3 mb-8">
-        <button onClick={() => router.back()} className="text-slate-500 hover:text-white transition-colors text-sm">← Kembali</button>
+        <button onClick={() => router.back()} className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-1"><FiArrowLeft className="w-4 h-4" /> Kembali</button>
         <h1 className="text-2xl font-black text-white font-serif">
           {mode === 'create' ? 'Artikel Baru' : 'Edit Artikel'}
         </h1>
@@ -143,7 +144,7 @@ export default function ArtikelForm({ initialData, mode }: Props) {
             </div>
           )}
           <label className="flex items-center gap-3 px-4 py-3 bg-slate-800 border border-slate-700 border-dashed rounded-xl cursor-pointer hover:border-amber-500/50 transition-colors">
-            <span className="text-xl">🖼️</span>
+            <FiImage className="w-5 h-5 text-slate-400" />
             <span className="text-sm text-slate-400 font-semibold">
               {thumbnailUploading ? 'Mengupload…' : 'Upload gambar thumbnail'}
             </span>

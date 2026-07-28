@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { FiArrowRight, FiArrowLeft } from 'react-icons/fi';
+import { BiRecycle } from 'react-icons/bi';
 
 const KECAMATAN = [
   'Gedongtengen','Jetis','Gondokusuman','Danurejan','Pakualaman',
@@ -127,8 +129,8 @@ export default function RegisterPage() {
                 if (!form.email || !form.password) { setError('Email dan password wajib diisi'); return; }
                 if (form.password !== form.confirmPassword) { setError('Password tidak cocok'); return; }
                 setError(''); setStep(2);
-              }} className="w-full bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors">
-                Lanjut →
+              }} className="w-full bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors inline-flex items-center justify-center gap-1.5">
+                Lanjut <FiArrowRight className="w-4 h-4" />
               </button>
             </>
           ) : (
@@ -173,12 +175,12 @@ export default function RegisterPage() {
               </div>
               <div className="flex gap-3">
                 <button type="button" onClick={() => setStep(1)}
-                  className="flex-1 bg-white/10 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-white/15 transition-colors border border-white/10">
-                  ← Kembali
+                  className="flex-1 bg-white/10 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-white/15 transition-colors border border-white/10 inline-flex items-center justify-center gap-1.5">
+                  <FiArrowLeft className="w-4 h-4" /> Kembali
                 </button>
                 <button type="submit" disabled={loading}
-                  className="flex-[2] bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors disabled:opacity-50">
-                  {loading ? 'Mendaftar…' : '🌿 Daftar Sekarang'}
+                  className="flex-[2] bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-1.5">
+                  {loading ? 'Mendaftar…' : <><BiRecycle className="w-4 h-4" /> Daftar Sekarang</>}
                 </button>
               </div>
             </>
@@ -190,8 +192,8 @@ export default function RegisterPage() {
             </p>
             <p className="text-white/20 text-xs">
               Bukan pengelola Bank Sampah?{' '}
-              <Link href="/auth/register/nasabah" className="text-white/40 hover:text-green-400 transition-colors">
-                Daftar sebagai Nasabah →
+              <Link href="/auth/register/nasabah" className="text-white/40 hover:text-green-400 transition-colors inline-flex items-center gap-1">
+                Daftar sebagai Nasabah <FiArrowRight className="w-3 h-3" />
               </Link>
             </p>
           </div>

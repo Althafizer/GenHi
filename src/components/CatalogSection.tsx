@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import BankCard from './BankCard';
 import type { BankSampah, Spesialisasi } from '@/lib/types';
+import { FiSearch } from 'react-icons/fi';
 
 const ALL_SPEC: (Spesialisasi | 'Semua')[] = [
   'Semua','Plastik','Kertas','Kardus','Logam','Botol Kaca',
@@ -48,7 +49,7 @@ export default function CatalogSection({ banks }: { banks: BankSampah[] }) {
         {/* Filter bar */}
         <div className="bg-white rounded-2xl p-5 mb-9 shadow-lg shadow-green-900/6 flex flex-wrap gap-3 items-center">
           <div className="flex-1 min-w-[200px] flex items-center gap-2 bg-green-50 border border-green-100 rounded-xl px-4 py-2.5">
-            <span>🔍</span>
+            <FiSearch className="w-4 h-4 text-gray-400 shrink-0" />
             <input value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Cari nama atau kecamatan…"
               className="bg-transparent border-none outline-none text-sm w-full text-green-900 placeholder:text-gray-400" />
@@ -81,7 +82,7 @@ export default function CatalogSection({ banks }: { banks: BankSampah[] }) {
 
         {filtered.length === 0 && (
           <div className="text-center py-20 text-gray-400">
-            <div className="text-5xl mb-4">🔍</div>
+            <FiSearch className="w-12 h-12 mx-auto mb-4 text-gray-300" />
             <p>Tidak ada bank sampah yang ditemukan</p>
           </div>
         )}

@@ -2,18 +2,19 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { FiGrid, FiHome, FiFileText, FiUsers, FiDollarSign, FiCpu, FiTag, FiGlobe, FiLogOut } from 'react-icons/fi';
 
 const NAV_ITEMS = [
-  { href: '/admin', label: 'Overview', icon: '◉', exact: true },
-  { href: '/admin/bank-sampah', label: 'Bank Sampah', icon: '🏦', exact: false },
-  { href: '/admin/artikel', label: 'Artikel', icon: '📰', exact: false },
+  { href: '/admin', label: 'Overview', icon: FiGrid, exact: true },
+  { href: '/admin/bank-sampah', label: 'Bank Sampah', icon: FiHome, exact: false },
+  { href: '/admin/artikel', label: 'Artikel', icon: FiFileText, exact: false },
 ];
 
 const COMING_SOON = [
-  { label: 'Nasabah', icon: '👥' },
-  { label: 'Penarikan Saldo', icon: '💸' },
-  { label: 'Mesin Deposit', icon: '🤖' },
-  { label: 'Harga Sampah', icon: '💰' },
+  { label: 'Nasabah', icon: FiUsers },
+  { label: 'Penarikan Saldo', icon: FiDollarSign },
+  { label: 'Mesin Deposit', icon: FiCpu },
+  { label: 'Harga Sampah', icon: FiTag },
 ];
 
 export default function AdminSidebar() {
@@ -49,7 +50,7 @@ export default function AdminSidebar() {
                 ${isActive
                   ? 'bg-amber-500/15 text-amber-400 border border-amber-500/25'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}>
-              <span className="text-base leading-none">{n.icon}</span>
+              <n.icon className="w-4 h-4 shrink-0" />
               {n.label}
               {isActive && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />}
             </Link>
@@ -62,7 +63,7 @@ export default function AdminSidebar() {
           {COMING_SOON.map(n => (
             <div key={n.label}
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 cursor-not-allowed select-none">
-              <span className="text-base leading-none opacity-50">{n.icon}</span>
+              <n.icon className="w-4 h-4 shrink-0 opacity-50" />
               {n.label}
               <span className="ml-auto text-[10px] font-bold text-slate-700 bg-slate-800 px-2 py-0.5 rounded-full">Soon</span>
             </div>
@@ -74,11 +75,11 @@ export default function AdminSidebar() {
       <div className="px-3 py-3 border-t border-slate-800 flex flex-col gap-1">
         <Link href="/" target="_blank"
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all">
-          <span>🌐</span> Lihat Website
+          <FiGlobe className="w-4 h-4" /> Lihat Website
         </Link>
         <button onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all w-full text-left">
-          <span>→</span> Keluar
+          <FiLogOut className="w-4 h-4" /> Keluar
         </button>
       </div>
     </aside>

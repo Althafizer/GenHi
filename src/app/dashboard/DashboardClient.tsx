@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { BankSampah } from '@/lib/types';
 import LocationPicker from '@/components/LocationPicker';
+import { FiCheck, FiClock, FiExternalLink, FiCamera, FiBarChart2, FiInstagram, FiFacebook, FiYoutube, FiGlobe } from 'react-icons/fi';
 
 const SPESIALISASI = ['Plastik','Kertas','Kardus','Logam','Botol Kaca','Elektronik','Baterai','Minyak Jelantah','Tekstil','Organik'];
 const KECAMATAN = ['Gedongtengen','Jetis','Gondokusuman','Danurejan','Pakualaman','Gondomanan','Ngampilan','Wirobrajan','Mantrijeron','Kraton','Mergangsan','Umbulharjo','Kotagede','Tegalrejo','Depok'];
@@ -87,14 +88,14 @@ export default function DashboardClient({ user, bank, stats }: {
         </div>
         <div className="flex items-center gap-3">
           {bank?.aktif ? (
-            <span className="bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-500/30">✓ Aktif di Katalog</span>
+            <span className="bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-500/30 inline-flex items-center gap-1"><FiCheck className="w-3 h-3" /> Aktif di Katalog</span>
           ) : (
-            <span className="bg-amber-500/15 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20">⏳ Menunggu Verifikasi</span>
+            <span className="bg-amber-500/15 text-amber-400 text-xs font-bold px-3 py-1 rounded-full border border-amber-500/20 inline-flex items-center gap-1"><FiClock className="w-3 h-3" /> Menunggu Verifikasi</span>
           )}
           {bank?.slug && (
             <Link href={`/bank-sampah/${bank.slug}`} target="_blank"
-              className="text-xs text-green-400 hover:text-green-300 transition-colors font-semibold border border-green-500/30 px-3 py-1 rounded-full hover:bg-green-500/10">
-              Lihat Profil ↗
+              className="text-xs text-green-400 hover:text-green-300 transition-colors font-semibold border border-green-500/30 px-3 py-1 rounded-full hover:bg-green-500/10 inline-flex items-center gap-1">
+              Lihat Profil <FiExternalLink className="w-3 h-3" />
             </Link>
           )}
           <button onClick={handleLogout} className="text-xs text-white/40 hover:text-red-400 transition-colors font-semibold">Keluar</button>
@@ -104,11 +105,11 @@ export default function DashboardClient({ user, bank, stats }: {
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Welcome */}
         <div className="bg-gradient-to-br from-green-600 to-green-800 rounded-2xl p-6 mb-6 text-white">
-          <h1 className="text-2xl font-black font-serif mb-1">Halo, {bank?.nama || user.email}! 👋</h1>
+          <h1 className="text-2xl font-black font-serif mb-1">Halo, {bank?.nama || user.email}!</h1>
           <p className="text-green-200 text-sm">Kelola profil bank sampahmu di sini. Perubahan akan langsung terlihat di website GenHi.</p>
           {!bank?.aktif && (
-            <div className="mt-3 bg-white/10 rounded-xl px-4 py-2.5 text-xs text-green-200">
-              ⏳ Profil kamu sedang dalam proses verifikasi oleh tim GenHi (1–2 hari kerja)
+            <div className="mt-3 bg-white/10 rounded-xl px-4 py-2.5 text-xs text-green-200 flex items-center gap-1.5">
+              <FiClock className="w-3.5 h-3.5 shrink-0" /> Profil kamu sedang dalam proses verifikasi oleh tim GenHi (1–2 hari kerja)
             </div>
           )}
         </div>
@@ -227,7 +228,7 @@ export default function DashboardClient({ user, bank, stats }: {
                 </div>
               )}
               <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-white/20 rounded-2xl cursor-pointer hover:border-green-500/50 hover:bg-white/[4%] transition-all">
-                <span className="text-3xl mb-2">📸</span>
+                <FiCamera className="w-8 h-8 mb-2 text-green-400" />
                 <span className="text-sm font-semibold text-green-400">Klik untuk upload foto</span>
                 <span className="text-xs text-white/30 mt-1">PNG, JPG, WEBP (max 5MB)</span>
                 <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
@@ -240,13 +241,13 @@ export default function DashboardClient({ user, bank, stats }: {
         {tab === 'Sosial Media' && (
           <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6 flex flex-col gap-5">
             {[
-              { label:'📸 Instagram (username)', key:'instagram', placeholder:'@banksampaumu' },
-              { label:'📘 Facebook (URL halaman)', key:'facebook', placeholder:'https://facebook.com/...' },
-              { label:'▶️ YouTube (URL channel)', key:'youtube', placeholder:'https://youtube.com/...' },
-              { label:'🌐 Website', key:'website', placeholder:'https://banksampaumu.id' },
+              { label:'Instagram (username)', icon: FiInstagram, key:'instagram', placeholder:'@banksampaumu' },
+              { label:'Facebook (URL halaman)', icon: FiFacebook, key:'facebook', placeholder:'https://facebook.com/...' },
+              { label:'YouTube (URL channel)', icon: FiYoutube, key:'youtube', placeholder:'https://youtube.com/...' },
+              { label:'Website', icon: FiGlobe, key:'website', placeholder:'https://banksampaumu.id' },
             ].map(f => (
               <div key={f.key}>
-                <label className={labelCls}>{f.label}</label>
+                <label className={labelCls + ' flex items-center gap-1.5'}><f.icon className="w-3.5 h-3.5" /> {f.label}</label>
                 <input value={(form as any)[f.key]} onChange={e => update(f.key, e.target.value)} placeholder={f.placeholder} className={inputCls} />
               </div>
             ))}
@@ -261,7 +262,7 @@ export default function DashboardClient({ user, bank, stats }: {
             <div className="flex flex-col gap-4">
               {stats.length === 0 && (
                 <div className="text-center py-10 text-white/30">
-                  <div className="text-4xl mb-3">📊</div>
+                  <FiBarChart2 className="w-10 h-10 mx-auto mb-3" />
                   <p className="text-sm">Belum ada data statistik</p>
                 </div>
               )}
@@ -288,7 +289,7 @@ export default function DashboardClient({ user, bank, stats }: {
               className={`px-8 py-3.5 rounded-2xl font-bold text-sm transition-all
                 ${saved ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-green-500 text-white hover:bg-green-400 shadow-lg shadow-green-500/25'}
                 disabled:opacity-50`}>
-              {saving ? 'Menyimpan…' : saved ? '✓ Tersimpan!' : 'Simpan Perubahan'}
+              {saving ? 'Menyimpan…' : saved ? <span className="inline-flex items-center gap-1.5"><FiCheck className="w-4 h-4" /> Tersimpan!</span> : 'Simpan Perubahan'}
             </button>
           </div>
         )}

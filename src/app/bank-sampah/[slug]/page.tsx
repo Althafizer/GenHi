@@ -2,11 +2,19 @@ import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import type { ComponentType } from 'react';
+import {
+  FiArrowLeft, FiCheck, FiMapPin, FiClock, FiMessageCircle, FiMail, FiGlobe,
+  FiSmartphone, FiBattery, FiDroplet, FiFileText, FiBox, FiTool,
+  FiInstagram, FiFacebook, FiYoutube, FiArrowDown, FiStar,
+} from 'react-icons/fi';
+import { IoShirtOutline, IoWineOutline, IoLeafOutline } from 'react-icons/io5';
+import { BiRecycle } from 'react-icons/bi';
 
-const SPEC_ICONS: Record<string, string> = {
-  Plastik: '🧴', Kertas: '📄', Kardus: '📦', Logam: '🔩',
-  'Botol Kaca': '🍶', Elektronik: '📱', Baterai: '🔋',
-  'Minyak Jelantah': '🛢️', Tekstil: '👕', Organik: '🌿',
+const SPEC_ICONS: Record<string, ComponentType<{ className?: string }>> = {
+  Plastik: FiBox, Kertas: FiFileText, Kardus: FiBox, Logam: FiTool,
+  'Botol Kaca': IoWineOutline, Elektronik: FiSmartphone, Baterai: FiBattery,
+  'Minyak Jelantah': FiDroplet, Tekstil: IoShirtOutline, Organik: IoLeafOutline,
 };
 
 export default async function BankSampahProfilePage({ params }: { params: { slug: string } }) {
@@ -39,8 +47,8 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
           <div className="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center text-white font-black font-serif text-sm">G</div>
           <span className="font-black text-green-800 font-serif text-base">GenHi</span>
         </Link>
-        <Link href="/#katalog" className="text-sm text-green-700 font-semibold hover:text-green-500 transition-colors">
-          ← Kembali ke Katalog
+        <Link href="/#katalog" className="text-sm text-green-700 font-semibold hover:text-green-500 transition-colors inline-flex items-center gap-1">
+          <FiArrowLeft className="w-4 h-4" /> Kembali ke Katalog
         </Link>
       </header>
 
@@ -50,7 +58,7 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
           <Image src={bank.foto_url} alt={bank.nama} fill className="object-cover" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            <span className="text-9xl">♻️</span>
+            <BiRecycle className="w-40 h-40 text-white" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -58,15 +66,15 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center gap-2 mb-2">
               {bank.verified && (
-                <span className="bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">✓ Terverifikasi</span>
+                <span className="bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1"><FiCheck className="w-3 h-3" /> Terverifikasi</span>
               )}
-              <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${bank.buka ? 'bg-white/20 text-white' : 'bg-red-500/80 text-white'}`}>
-                {bank.buka ? '🟢 Buka' : '🔴 Tutup'}
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1.5 ${bank.buka ? 'bg-white/20 text-white' : 'bg-red-500/80 text-white'}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${bank.buka ? 'bg-green-400' : 'bg-red-300'}`} /> {bank.buka ? 'Buka' : 'Tutup'}
               </span>
             </div>
             <h1 className="text-2xl md:text-4xl font-black text-white font-serif leading-tight">{bank.nama}</h1>
             <p className="text-green-200 text-sm mt-1 flex items-center gap-1">
-              <span>📍</span> {bank.alamat}, {bank.kecamatan}
+              <FiMapPin className="w-3.5 h-3.5" /> {bank.alamat}, {bank.kecamatan}
             </p>
           </div>
         </div>
@@ -79,24 +87,24 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
           {bank.wa && (
             <a href={waUrl} target="_blank"
               className="flex items-center gap-2 bg-green-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-green-500 transition-colors">
-              💬 Hubungi WhatsApp
+              <FiMessageCircle className="w-4 h-4" /> Hubungi WhatsApp
             </a>
           )}
           {bank.email && (
             <a href={`mailto:${bank.email}`}
               className="flex items-center gap-2 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors">
-              ✉️ {bank.email}
+              <FiMail className="w-4 h-4" /> {bank.email}
             </a>
           )}
           {bank.website && (
             <a href={bank.website} target="_blank"
               className="flex items-center gap-2 border border-gray-200 text-gray-700 px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors">
-              🌐 Website
+              <FiGlobe className="w-4 h-4" /> Website
             </a>
           )}
           {bank.jam && (
             <div className="flex items-center gap-2 text-sm text-gray-500 ml-auto">
-              <span>🕐</span><span className="font-medium">{bank.jam}</span>
+              <FiClock className="w-4 h-4" /><span className="font-medium">{bank.jam}</span>
             </div>
           )}
         </div>
@@ -118,12 +126,15 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                 <h2 className="font-black text-green-800 font-serif text-lg mb-4">Sampah yang Diterima</h2>
                 <div className="flex flex-wrap gap-2">
-                  {bank.spesialisasi.map((s: string) => (
-                    <span key={s}
-                      className="flex items-center gap-1.5 bg-green-50 text-green-800 border border-green-100 text-sm px-4 py-2 rounded-full font-semibold">
-                      {SPEC_ICONS[s] || '♻️'} {s}
-                    </span>
-                  ))}
+                  {bank.spesialisasi.map((s: string) => {
+                    const SpecIcon = SPEC_ICONS[s] || BiRecycle;
+                    return (
+                      <span key={s}
+                        className="flex items-center gap-1.5 bg-green-50 text-green-800 border border-green-100 text-sm px-4 py-2 rounded-full font-semibold">
+                        <SpecIcon className="w-4 h-4" /> {s}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -186,7 +197,7 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
               <h3 className="font-black text-green-800 font-serif">Informasi</h3>
               <div className="flex flex-col gap-2.5 text-sm">
                 <div className="flex gap-2">
-                  <span className="text-gray-400 w-5">📍</span>
+                  <FiMapPin className="text-gray-400 w-5 shrink-0" />
                   <div>
                     <div className="font-semibold text-gray-700">{bank.kecamatan}</div>
                     <div className="text-gray-500 text-xs">{bank.alamat}</div>
@@ -194,25 +205,27 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
                 </div>
                 {bank.jam && (
                   <div className="flex gap-2">
-                    <span className="text-gray-400 w-5">🕐</span>
+                    <FiClock className="text-gray-400 w-5 shrink-0" />
                     <span className="text-gray-600">{bank.jam}</span>
                   </div>
                 )}
                 {bank.wa && (
                   <div className="flex gap-2">
-                    <span className="text-gray-400 w-5">📱</span>
+                    <FiSmartphone className="text-gray-400 w-5 shrink-0" />
                     <span className="text-gray-600">{bank.wa}</span>
                   </div>
                 )}
                 {bank.email && (
                   <div className="flex gap-2">
-                    <span className="text-gray-400 w-5">✉️</span>
+                    <FiMail className="text-gray-400 w-5 shrink-0" />
                     <span className="text-gray-600 break-all">{bank.email}</span>
                   </div>
                 )}
               </div>
               <div className="flex items-center gap-2 mt-1 pt-3 border-t border-gray-50">
-                <span className="text-amber-400">{'★'.repeat(Math.floor(bank.rating))}</span>
+                <span className="text-amber-400 flex items-center gap-0.5">
+                  {Array.from({ length: Math.floor(bank.rating) }).map((_, i) => <FiStar key={i} className="w-3.5 h-3.5 fill-current" />)}
+                </span>
                 <span className="font-bold text-gray-800 text-sm">{Number(bank.rating).toFixed(1)}</span>
                 <span className="text-gray-400 text-xs">({bank.reviews} ulasan)</span>
               </div>
@@ -227,13 +240,13 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
                     <a href={`https://instagram.com/${bank.instagram.replace('@', '')}`} target="_blank"
                       className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-100 hover:border-pink-200 transition-colors group">
                       <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white text-base shrink-0">
-                        📸
+                        <FiInstagram className="w-4 h-4" />
                       </div>
                       <div className="min-w-0">
                         <div className="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition-colors truncate">
                           {bank.instagram.startsWith('@') ? bank.instagram : `@${bank.instagram}`}
                         </div>
-                        <div className="text-xs text-gray-400">Lihat feed di bawah ↓</div>
+                        <div className="text-xs text-gray-400 flex items-center gap-1">Lihat feed di bawah <FiArrowDown className="w-3 h-3" /></div>
                       </div>
                       <svg className="ml-auto w-4 h-4 text-gray-300 group-hover:text-pink-400 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -243,7 +256,7 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
                   {bank.facebook && (
                     <a href={bank.facebook} target="_blank"
                       className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100 hover:border-blue-200 transition-colors group">
-                      <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white text-base shrink-0">📘</div>
+                      <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white text-base shrink-0"><FiFacebook className="w-4 h-4" /></div>
                       <div className="min-w-0">
                         <div className="font-bold text-gray-800 text-sm group-hover:text-blue-600 transition-colors truncate">Facebook</div>
                         <div className="text-xs text-gray-400">Halaman resmi</div>
@@ -256,7 +269,7 @@ export default async function BankSampahProfilePage({ params }: { params: { slug
                   {bank.youtube && (
                     <a href={bank.youtube} target="_blank"
                       className="flex items-center gap-3 p-3 rounded-xl bg-red-50 border border-red-100 hover:border-red-200 transition-colors group">
-                      <div className="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center text-white text-base shrink-0">▶️</div>
+                      <div className="w-9 h-9 rounded-lg bg-red-600 flex items-center justify-center text-white text-base shrink-0"><FiYoutube className="w-4 h-4" /></div>
                       <div className="min-w-0">
                         <div className="font-bold text-gray-800 text-sm group-hover:text-red-600 transition-colors truncate">YouTube</div>
                         <div className="text-xs text-gray-400">Channel video</div>

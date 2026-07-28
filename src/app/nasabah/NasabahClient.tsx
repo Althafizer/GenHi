@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import QRCode from 'react-qr-code';
 import { createClient } from '@/lib/supabase/client';
 import type { NasabahProfile, Saldo, QrToken, BankSampah } from '@/lib/types';
+import { FiSmartphone, FiMapPin, FiSearch, FiClipboard } from 'react-icons/fi';
 
 type NearbyBank = Pick<BankSampah, 'id' | 'nama' | 'slug' | 'alamat' | 'kecamatan' | 'buka' | 'lat' | 'lng' | 'spesialisasi' | 'jam' | 'wa'> & { distance: number };
 
@@ -234,8 +235,8 @@ export default function NasabahClient({
             </div>
           ) : (
             <div className="flex flex-col items-center gap-4 py-4">
-              <div className="w-24 h-24 rounded-2xl bg-white/[8%] border-2 border-dashed border-white/20 flex items-center justify-center text-4xl">
-                📱
+              <div className="w-24 h-24 rounded-2xl bg-white/[8%] border-2 border-dashed border-white/20 flex items-center justify-center">
+                <FiSmartphone className="w-10 h-10 text-white/40" />
               </div>
               <div className="text-center">
                 <p className="text-white/60 text-sm font-semibold">Belum ada QR Code aktif</p>
@@ -275,8 +276,8 @@ export default function NasabahClient({
 
           {!userCoords ? (
             <div className="flex flex-col items-center gap-4 py-4">
-              <div className="w-16 h-16 rounded-2xl bg-white/[8%] border-2 border-dashed border-white/20 flex items-center justify-center text-3xl">
-                📍
+              <div className="w-16 h-16 rounded-2xl bg-white/[8%] border-2 border-dashed border-white/20 flex items-center justify-center">
+                <FiMapPin className="w-7 h-7 text-white/40" />
               </div>
               {locationError && (
                 <p className="text-red-400 text-xs text-center">{locationError}</p>
@@ -296,7 +297,7 @@ export default function NasabahClient({
             </div>
           ) : nearbyBanks.length === 0 ? (
             <div className="flex flex-col items-center py-8 text-center gap-2">
-              <div className="text-3xl">🔍</div>
+              <FiSearch className="w-8 h-8 text-white/30" />
               <p className="text-white/40 text-sm">Tidak ada bank sampah dalam radius {radius} km</p>
               <p className="text-white/20 text-xs">Coba perbesar radius pencarian</p>
             </div>
@@ -364,7 +365,7 @@ export default function NasabahClient({
         <div className="bg-white/[7%] backdrop-blur-xl border border-white/10 rounded-2xl p-6">
           <h2 className="text-white font-black font-serif mb-4">Riwayat Transaksi</h2>
           <div className="flex flex-col items-center py-8 text-center">
-            <div className="text-4xl mb-3">📋</div>
+            <FiClipboard className="w-10 h-10 mx-auto mb-3 text-white/30" />
             <p className="text-white/40 text-sm">Belum ada riwayat transaksi</p>
             <p className="text-white/20 text-xs mt-1">Transaksi deposit akan muncul di sini</p>
           </div>

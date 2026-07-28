@@ -2,6 +2,15 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FiArrowRight, FiHome, FiClipboard, FiMap, FiFileText, FiPlusCircle } from 'react-icons/fi';
+
+const MOBILE_NAV_ITEMS = [
+  { href: '#', icon: FiHome, label: 'Home' },
+  { href: '#katalog', icon: FiClipboard, label: 'Katalog' },
+  { href: '#peta', icon: FiMap, label: 'Peta' },
+  { href: '#artikel', icon: FiFileText, label: 'Artikel' },
+  { href: '#daftar', icon: FiPlusCircle, label: 'Daftar' },
+];
 
 const LINKS = [
   { href: '#katalog', label: 'Katalog' },
@@ -48,8 +57,8 @@ export default function Navbar() {
             </a>
           ))}
           <a href="#daftar"
-            className="bg-green-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-green-400 transition-colors shadow-lg shadow-green-500/30">
-            Mulai Gratis →
+            className="bg-green-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-green-400 transition-colors shadow-lg shadow-green-500/30 inline-flex items-center gap-1.5">
+            Mulai Gratis <FiArrowRight className="w-4 h-4" />
           </a>
           <Link href="/auth/login"
             className={`text-sm font-semibold transition-colors ${scrolled ? 'text-green-700' : 'text-white/70'}`}>
@@ -76,8 +85,8 @@ export default function Navbar() {
           </a>
         ))}
         <a href="#daftar" onClick={() => setMenuOpen(false)}
-          className="bg-green-500 text-white px-9 py-4 rounded-2xl text-xl font-black mt-2">
-          Mulai Gratis →
+          className="bg-green-500 text-white px-9 py-4 rounded-2xl text-xl font-black mt-2 inline-flex items-center gap-2">
+          Mulai Gratis <FiArrowRight className="w-5 h-5" />
         </a>
         <Link href="/auth/login" onClick={() => setMenuOpen(false)}
           className="text-white/60 text-base font-semibold">
@@ -87,16 +96,10 @@ export default function Navbar() {
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/97 backdrop-blur-xl border-t border-green-100 flex justify-around items-center py-2 pb-safe shadow-lg">
-        {[
-          { href: '#', icon: '🏠', label: 'Home' },
-          { href: '#katalog', icon: '📋', label: 'Katalog' },
-          { href: '#peta', icon: '🗺️', label: 'Peta' },
-          { href: '#artikel', icon: '📰', label: 'Artikel' },
-          { href: '#daftar', icon: '➕', label: 'Daftar' },
-        ].map(item => (
+        {MOBILE_NAV_ITEMS.map(item => (
           <a key={item.href} href={item.href}
             className="flex flex-col items-center gap-1 px-3 py-1 rounded-xl hover:bg-green-50">
-            <span className="text-xl">{item.icon}</span>
+            <item.icon className="w-5 h-5 text-gray-500" />
             <span className="text-[10px] font-bold text-gray-400">{item.label}</span>
           </a>
         ))}

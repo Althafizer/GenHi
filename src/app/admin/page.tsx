@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { FiArrowRight } from 'react-icons/fi';
 
 interface Counts {
   totalBanks: number;
@@ -101,8 +102,8 @@ export default function AdminOverviewPage() {
               )}
               <h2 className="text-white font-bold text-sm">Bank Sampah Pending</h2>
             </div>
-            <Link href="/admin/bank-sampah" className="text-xs text-amber-400 hover:text-amber-300 font-semibold transition-colors">
-              Kelola semua →
+            <Link href="/admin/bank-sampah" className="text-xs text-amber-400 hover:text-amber-300 font-semibold transition-colors inline-flex items-center gap-1">
+              Kelola semua <FiArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           <div className="divide-y divide-slate-700/30">
@@ -125,8 +126,8 @@ export default function AdminOverviewPage() {
         <div className="bg-slate-800/40 border border-slate-700/50 rounded-2xl overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
             <h2 className="text-white font-bold text-sm">Artikel Terbaru</h2>
-            <Link href="/admin/artikel" className="text-xs text-blue-400 hover:text-blue-300 font-semibold transition-colors">
-              Kelola semua →
+            <Link href="/admin/artikel" className="text-xs text-blue-400 hover:text-blue-300 font-semibold transition-colors inline-flex items-center gap-1">
+              Kelola semua <FiArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           <div className="divide-y divide-slate-700/30">

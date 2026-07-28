@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { BankSampah } from '@/lib/types';
+import { FiCheck, FiClock, FiExternalLink } from 'react-icons/fi';
 
 type Filter = 'semua' | 'pending' | 'terverifikasi' | 'nonaktif';
 
@@ -130,9 +131,9 @@ export default function AdminBankSampahPage() {
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       {b.verified ? (
-                        <span className="px-2 py-0.5 bg-green-500/15 text-green-400 text-xs font-bold rounded-full border border-green-500/25">✓ Terverifikasi</span>
+                        <span className="px-2 py-0.5 bg-green-500/15 text-green-400 text-xs font-bold rounded-full border border-green-500/25 inline-flex items-center gap-1"><FiCheck className="w-3 h-3" /> Terverifikasi</span>
                       ) : (
-                        <span className="px-2 py-0.5 bg-amber-500/15 text-amber-400 text-xs font-bold rounded-full border border-amber-500/25">⏳ Pending</span>
+                        <span className="px-2 py-0.5 bg-amber-500/15 text-amber-400 text-xs font-bold rounded-full border border-amber-500/25 inline-flex items-center gap-1"><FiClock className="w-3 h-3" /> Pending</span>
                       )}
                       {!b.aktif && (
                         <span className="px-2 py-0.5 bg-red-500/15 text-red-400 text-xs font-bold rounded-full border border-red-500/25">Nonaktif</span>
@@ -163,8 +164,8 @@ export default function AdminBankSampahPage() {
                         {processing === b.id + '_aktif' ? '…' : b.aktif ? 'Nonaktifkan' : 'Aktifkan'}
                       </button>
                       <Link href={`/bank-sampah/${b.slug}`} target="_blank"
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:text-white border border-transparent transition-all">
-                        ↗
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:text-white border border-transparent transition-all inline-flex items-center">
+                        <FiExternalLink className="w-3.5 h-3.5" />
                       </Link>
                     </div>
                   </td>

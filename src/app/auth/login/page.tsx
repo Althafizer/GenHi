@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { FiArrowRight, FiHome } from 'react-icons/fi';
+import { BiRecycle } from 'react-icons/bi';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -94,18 +96,18 @@ export default function LoginPage() {
           </div>
           <button type="submit" disabled={loading}
             className="w-full bg-green-500 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-            {loading ? 'Memproses…' : 'Masuk →'}
+            {loading ? 'Memproses…' : <span className="inline-flex items-center gap-1.5">Masuk <FiArrowRight className="w-4 h-4" /></span>}
           </button>
           <div className="border-t border-white/10 pt-4 flex flex-col gap-2">
             <p className="text-center text-green-500/50 text-xs">Belum punya akun?</p>
             <div className="grid grid-cols-2 gap-2">
               <Link href="/auth/register/nasabah"
-                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all">
-                ♻️ Daftar Nasabah
+                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all inline-flex items-center justify-center gap-1.5">
+                <BiRecycle className="w-4 h-4" /> Daftar Nasabah
               </Link>
               <Link href="/auth/register"
-                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all">
-                🏦 Daftar Bank Sampah
+                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all inline-flex items-center justify-center gap-1.5">
+                <FiHome className="w-4 h-4" /> Daftar Bank Sampah
               </Link>
             </div>
           </div>
