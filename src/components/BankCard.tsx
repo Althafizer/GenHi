@@ -1,12 +1,13 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import type { BankSampah } from '@/lib/types';
 import type { ComponentType } from 'react';
 import {
   FiCheck, FiMapPin, FiClock, FiMessageCircle, FiSmartphone, FiBattery,
-  FiDroplet, FiFileText, FiBox, FiTool, FiInstagram, FiFacebook, FiYoutube, FiStar,
+  FiDroplet, FiFileText, FiBox, FiTool, FiInstagram, FiFacebook, FiYoutube,
 } from 'react-icons/fi';
 import { IoShirtOutline, IoWineOutline, IoLeafOutline } from 'react-icons/io5';
 import { BiRecycle } from 'react-icons/bi';
@@ -18,13 +19,16 @@ const SPEC_ICONS: Record<string, ComponentType<{ className?: string }>> = {
 };
 
 export default function BankCard({ bank }: { bank: BankSampah }) {
+  const router = useRouter();
   const [hovered, setHovered] = useState(false);
   const waUrl = `https://wa.me/62${bank.wa?.replace(/^0/, '')}`;
+  const detailHref = `/bank-sampah/${bank.slug}`;
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => router.push(detailHref)}
       className={`bg-white rounded-2xl overflow-hidden flex flex-col transition-all duration-300 cursor-pointer
         ${hovered ? 'shadow-2xl shadow-green-900/15 -translate-y-1.5' : 'shadow-md shadow-green-900/6'}`}>
       {/* Photo */}
@@ -73,31 +77,23 @@ export default function BankCard({ bank }: { bank: BankSampah }) {
           <FiClock className="w-3.5 h-3.5 shrink-0" /><span>{bank.jam}</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-amber-400 flex items-center gap-0.5">
-            {Array.from({ length: Math.floor(bank.rating) }).map((_, i) => <FiStar key={i} className="w-3.5 h-3.5 fill-current" />)}
-          </span>
-          <span className="font-bold text-sm text-green-900">{bank.rating.toFixed(1)}</span>
-          <span className="text-gray-400 text-xs">({bank.reviews} ulasan)</span>
-        </div>
-
         {/* Social media */}
         {(bank.instagram || bank.facebook || bank.youtube) && (
           <div className="flex gap-2 mt-0.5">
-            {bank.instagram && <a href={`https://instagram.com/${bank.instagram}`} target="_blank" className="text-xs text-pink-500 hover:underline inline-flex items-center gap-1"><FiInstagram className="w-3.5 h-3.5" /> IG</a>}
-            {bank.facebook && <a href={bank.facebook} target="_blank" className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1"><FiFacebook className="w-3.5 h-3.5" /> FB</a>}
-            {bank.youtube && <a href={bank.youtube} target="_blank" className="text-xs text-red-500 hover:underline inline-flex items-center gap-1"><FiYoutube className="w-3.5 h-3.5" /> YT</a>}
+            {bank.instagram && <a href={`https://instagram.com/${bank.instagram}`} target="_blank" onClick={e => e.stopPropagation()} className="text-xs text-pink-500 hover:underline inline-flex items-center gap-1"><FiInstagram className="w-3.5 h-3.5" /> IG</a>}
+            {bank.facebook && <a href={bank.facebook} target="_blank" onClick={e => e.stopPropagation()} className="text-xs text-blue-500 hover:underline inline-flex items-center gap-1"><FiFacebook className="w-3.5 h-3.5" /> FB</a>}
+            {bank.youtube && <a href={bank.youtube} target="_blank" onClick={e => e.stopPropagation()} className="text-xs text-red-500 hover:underline inline-flex items-center gap-1"><FiYoutube className="w-3.5 h-3.5" /> YT</a>}
           </div>
         )}
 
         <div className="flex gap-2 mt-auto pt-3">
           {bank.wa && (
-            <a href={waUrl} target="_blank"
+            <a href={waUrl} target="_blank" onClick={e => e.stopPropagation()}
               className="flex-1 bg-green-600 text-white rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-500 transition-colors flex items-center justify-center gap-1.5">
               <FiMessageCircle className="w-3.5 h-3.5" /> Hubungi WA
             </a>
           )}
-          <Link href={`/bank-sampah/${bank.slug}`}
+          <Link href={detailHref} onClick={e => e.stopPropagation()}
             className="flex-1 border-2 border-green-600 text-green-600 rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-50 transition-colors">
             Lihat Profil
           </Link>
