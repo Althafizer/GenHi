@@ -48,9 +48,12 @@ export default function AdminBankSampahPage() {
   const toggleVerified = async (b: BankSampah) => {
     setProcessing(b.id);
     const supabase = createClient();
+    const nextVerified = !b.verified;
     await supabase
       .from('bank_sampah')
-      .update({ verified: !b.verified })
+      // Verifying also publishes the listing — otherwise it stays hidden from the
+      // public catalog/map (which gate on `aktif`) even after being approved.
+      .update(nextVerified ? { verified: true, aktif: true } : { verified: false })
       .eq('id', b.id);
     await fetchBanks();
     setProcessing(null);

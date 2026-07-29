@@ -91,10 +91,12 @@ export default function BankCard({ bank }: { bank: BankSampah }) {
         )}
 
         <div className="flex gap-2 mt-auto pt-3">
-          <a href={waUrl} target="_blank"
-            className="flex-1 bg-green-600 text-white rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-500 transition-colors flex items-center justify-center gap-1.5">
-<FiMessageCircle className="w-3.5 h-3.5" /> Hubungi WA
-          </a>
+          {bank.wa && (
+            <a href={waUrl} target="_blank"
+              className="flex-1 bg-green-600 text-white rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-500 transition-colors flex items-center justify-center gap-1.5">
+              <FiMessageCircle className="w-3.5 h-3.5" /> Hubungi WA
+            </a>
+          )}
           <Link href={`/bank-sampah/${bank.slug}`}
             className="flex-1 border-2 border-green-600 text-green-600 rounded-xl py-2.5 text-xs font-bold text-center hover:bg-green-50 transition-colors">
             Lihat Profil

@@ -54,13 +54,16 @@ export default function ArtikelForm({ initialData, mode }: Props) {
     const file = e.target.files?.[0];
     if (!file) return;
     setThumbnailUploading(true);
+    setError('');
     const supabase = createClient();
     const ext = file.name.split('.').pop();
     const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
     const { error: upErr } = await supabase.storage
       .from('artikel-thumbnails')
       .upload(path, file, { upsert: false });
-    if (!upErr) {
+    if (upErr) {
+      setError('Gagal upload thumbnail: ' + upErr.message);
+    } else {
       const { data } = supabase.storage.from('artikel-thumbnails').getPublicUrl(path);
       update('thumbnail_url', data.publicUrl);
     }

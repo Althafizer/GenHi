@@ -173,6 +173,9 @@ export default function RegisterPage() {
                 <label className="block text-green-400 text-xs font-bold mb-2">Jam Operasional</label>
                 <input type="text" value={form.jam} onChange={e => update('jam', e.target.value)} placeholder="Senin–Jumat 08:00–16:00" className={inputCls} />
               </div>
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3 text-xs text-amber-300 leading-relaxed">
+                Titik lokasi di peta belum diisi lewat form ini. Setelah akun disetujui admin, atur lokasi persis di menu <strong>Lokasi</strong> pada dashboard — tanpa ini, bank sampahmu tidak akan muncul di peta interaktif maupun pencarian terdekat.
+              </div>
               <div className="flex gap-3">
                 <button type="button" onClick={() => setStep(1)}
                   className="flex-1 bg-white/10 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-white/15 transition-colors border border-white/10 inline-flex items-center justify-center gap-1.5">

@@ -1,11 +1,15 @@
 import Link from 'next/link';
-import { FiMail, FiSmartphone, FiMapPin, FiClock, FiFacebook, FiInstagram, FiTwitter, FiYoutube } from 'react-icons/fi';
+import { FiMail, FiSmartphone, FiMapPin, FiClock } from 'react-icons/fi';
 import { IoLeafOutline } from 'react-icons/io5';
 
-const SOCIAL_ICONS = [FiFacebook, FiInstagram, FiTwitter, FiYoutube];
-
 export default function Footer() {
-  const nav = ['Tentang GenHi','Katalog Bank Sampah','Peta Interaktif','Artikel','Daftar Bank Sampah'];
+  const nav = [
+    { label: 'Tentang GenHi', href: '/#tentang' },
+    { label: 'Katalog Bank Sampah', href: '/#katalog' },
+    { label: 'Peta Interaktif', href: '/#peta' },
+    { label: 'Artikel', href: '/artikel' },
+    { label: 'Daftar Bank Sampah', href: '/auth/register' },
+  ];
   const kontak = [
     { icon: FiMail, text:'info@genhi.id' },
     { icon: FiSmartphone, text:'+62 812-3456-7890' },
@@ -22,17 +26,12 @@ export default function Footer() {
               <span className="text-white font-black font-serif text-xl">GenHi</span>
             </div>
             <p className="text-green-700 text-sm leading-relaxed max-w-[240px]">Asosiasi bank sampah digital di Kota Yogyakarta.</p>
-            <div className="flex gap-3 mt-4">
-              {SOCIAL_ICONS.map((Icon,i) => (
-                <a key={i} href="#" className="w-9 h-9 bg-white/6 rounded-lg flex items-center justify-center text-white hover:bg-white/12 transition-colors"><Icon className="w-4 h-4" /></a>
-              ))}
-            </div>
           </div>
           <div>
             <h4 className="text-green-400 text-xs font-bold tracking-widest mb-4">NAVIGASI</h4>
             <div className="flex flex-col gap-2.5">
               {nav.map(item => (
-                <a key={item} href="#" className="text-green-700 text-sm hover:text-green-400 transition-colors">{item}</a>
+                <Link key={item.label} href={item.href} className="text-green-700 text-sm hover:text-green-400 transition-colors">{item.label}</Link>
               ))}
             </div>
           </div>

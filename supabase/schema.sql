@@ -203,6 +203,21 @@ create policy "photos_owner_delete" on storage.objects
     bucket_id = 'bank-sampah-photos' and auth.uid()::text = (storage.foldername(name))[1]
   );
 
+create policy "artikel_thumbnails_public_read" on storage.objects
+  for select using (bucket_id = 'artikel-thumbnails');
+
+create policy "artikel_thumbnails_admin_write" on storage.objects
+  for insert with check (
+    bucket_id = 'artikel-thumbnails'
+    and exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
+create policy "artikel_thumbnails_admin_delete" on storage.objects
+  for delete using (
+    bucket_id = 'artikel-thumbnails'
+    and exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+  );
+
 -- ── SEED DATA ────────────────────────────────────────────
 insert into bank_sampah (nama, slug, alamat, kecamatan, spesialisasi, jam, buka, wa, rating, reviews, lat, lng, aktif, verified)
 values
