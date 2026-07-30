@@ -183,12 +183,12 @@ export default function LocationPicker({
     }
   };
 
-  const labelCls = 'block text-green-400 text-xs font-bold mb-1.5';
-  const inputCls = 'w-full bg-white/[8%] border border-white/[12%] rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all placeholder:text-white/30';
+  const labelCls = 'block text-green-700 dark:text-green-400 text-xs font-bold mb-1.5';
+  const inputCls = 'w-full bg-white dark:bg-white/[8%] border border-gray-300 dark:border-white/[12%] rounded-xl px-4 py-3 text-green-900 dark:text-white text-sm outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all placeholder:text-gray-400 dark:placeholder:text-white/30';
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-white/50">
+      <p className="text-sm text-gray-500 dark:text-white/50">
         Tandai lokasi persis bank sampahmu — dipakai untuk pencarian bank sampah terdekat oleh nasabah.
       </p>
 
@@ -203,8 +203,8 @@ export default function LocationPicker({
           onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}
         />
         {!searchAvailable && !error && (
-          <p className="text-xs text-white/30 mt-1">
-            Jika saran pencarian tidak muncul, aktifkan <span className="text-white/50">Places API</span> di
+          <p className="text-xs text-gray-400 dark:text-white/30 mt-1">
+            Jika saran pencarian tidak muncul, aktifkan <span className="text-gray-500 dark:text-white/50">Places API</span> di
             Google Cloud, atau gunakan cara paste link di bawah.
           </p>
         )}
@@ -227,27 +227,27 @@ export default function LocationPicker({
           </button>
         </div>
         {linkError
-          ? <p className="text-xs text-red-400 mt-1">{linkError}</p>
-          : <p className="text-xs text-white/30 mt-1 flex items-center gap-1 flex-wrap">Buka tempat di Google Maps <FiArrowRight className="w-3 h-3" /> Share <FiArrowRight className="w-3 h-3" /> Salin link, lalu tempel di sini.</p>}
+          ? <p className="text-xs text-red-500 dark:text-red-400 mt-1">{linkError}</p>
+          : <p className="text-xs text-gray-400 dark:text-white/30 mt-1 flex items-center gap-1 flex-wrap">Buka tempat di Google Maps <FiArrowRight className="w-3 h-3" /> Share <FiArrowRight className="w-3 h-3" /> Salin link, lalu tempel di sini.</p>}
       </div>
 
       {/* Map */}
       <div>
         <div className="flex items-center justify-between mb-2 gap-3 flex-wrap">
-          <p className="text-xs text-white/40">Klik pada peta atau geser pin untuk menyesuaikan.</p>
+          <p className="text-xs text-gray-400 dark:text-white/40">Klik pada peta atau geser pin untuk menyesuaikan.</p>
           <button type="button" onClick={useMyLocation} disabled={locating}
-            className="shrink-0 text-xs font-bold text-green-400 border border-green-500/30 px-3 py-2 rounded-full hover:bg-green-500/10 transition-colors disabled:opacity-50">
+            className="shrink-0 text-xs font-bold text-green-700 dark:text-green-400 border border-green-300 dark:border-green-500/30 px-3 py-2 rounded-full hover:bg-green-50 dark:hover:bg-green-500/10 transition-colors disabled:opacity-50">
             {locating ? 'Mencari…' : <span className="inline-flex items-center gap-1"><FiMapPin className="w-3.5 h-3.5" /> Gunakan lokasi saya</span>}
           </button>
         </div>
 
         {error ? (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center text-red-300 text-sm">
+          <div className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-2xl p-6 text-center text-red-600 dark:text-red-300 text-sm">
             {error}
           </div>
         ) : (
           <div ref={containerRef}
-            className="w-full h-[360px] rounded-2xl overflow-hidden border border-white/10" />
+            className="w-full h-[360px] rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10" />
         )}
       </div>
 
@@ -264,16 +264,16 @@ export default function LocationPicker({
         </div>
         {lat != null && lng != null && (
           <button type="button" onClick={clearLocation}
-            className="shrink-0 text-xs font-bold text-red-400 border border-red-500/30 px-4 py-3 rounded-xl hover:bg-red-500/10 transition-colors inline-flex items-center gap-1.5">
+            className="shrink-0 text-xs font-bold text-red-500 dark:text-red-400 border border-red-300 dark:border-red-500/30 px-4 py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors inline-flex items-center gap-1.5">
             <FiTrash2 className="w-3.5 h-3.5" /> Hapus lokasi
           </button>
         )}
       </div>
 
       {lat == null || lng == null ? (
-        <p className="text-xs text-amber-400 flex items-center gap-1.5"><FiAlertTriangle className="w-3.5 h-3.5 shrink-0" /> Lokasi belum diatur — bank sampahmu tidak akan muncul di peta & pencarian terdekat.</p>
+        <p className="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1.5"><FiAlertTriangle className="w-3.5 h-3.5 shrink-0" /> Lokasi belum diatur — bank sampahmu tidak akan muncul di peta & pencarian terdekat.</p>
       ) : (
-        <p className="text-xs text-green-400 flex items-center gap-1.5"><FiCheck className="w-3.5 h-3.5 shrink-0" /> Lokasi sudah ditandai. Jangan lupa klik &quot;Simpan Perubahan&quot;.</p>
+        <p className="text-xs text-green-600 dark:text-green-400 flex items-center gap-1.5"><FiCheck className="w-3.5 h-3.5 shrink-0" /> Lokasi sudah ditandai. Jangan lupa klik &quot;Simpan Perubahan&quot;.</p>
       )}
     </div>
   );
