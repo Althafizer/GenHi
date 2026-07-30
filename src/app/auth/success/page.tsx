@@ -8,8 +8,8 @@ export default function SuccessPage() {
         <FiCheckCircle className="w-16 h-16 mb-6 mx-auto text-green-400" />
         <h1 className="text-4xl font-black text-white font-serif mb-4">Pendaftaran Berhasil!</h1>
         <p className="text-green-400/70 text-base leading-relaxed mb-8">
-          Terima kasih telah mendaftar. Cek email kamu untuk konfirmasi akun.
-          Setelah diverifikasi oleh tim GenHi, profil bank sampahmu akan tampil di katalog.
+          Terima kasih telah mendaftar. Kamu sudah bisa login menggunakan akun yang baru saja dibuat.
+          Setelah profil diverifikasi oleh tim GenHi, bank sampahmu akan tampil di katalog.
         </p>
         <Link href="/" className="inline-flex items-center gap-2 bg-green-500 text-white px-8 py-4 rounded-2xl font-black text-base hover:bg-green-400 transition-colors">
           Kembali ke Beranda <FiArrowRight className="w-4 h-4" />
