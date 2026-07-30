@@ -55,6 +55,19 @@ export interface Artikel {
   bank_sampah?: Pick<BankSampah, 'nama' | 'slug'>;
 }
 
+export interface JurnalPenimbangan {
+  id: string;
+  bank_sampah_id: string;
+  tanggal: string;
+  nama_nasabah: string | null;
+  jenis_sampah: string | null;
+  berat_kg: number;
+  harga_per_kg: number;
+  total: number;
+  catatan: string | null;
+  created_at: string;
+}
+
 export interface GlobalStats {
   total_bank_aktif: number;
   total_kecamatan: number;

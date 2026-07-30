@@ -27,7 +27,8 @@ function AnimatedNumber({ target, suffix = '' }: { target: number; suffix?: stri
 export default function StatsSection({ stats }: { stats: GlobalStats }) {
   const items = [
     { icon: FiHome, val: stats.total_bank_aktif || 47, suf: '', label: 'Bank Sampah Aktif', sub: 'di Kota Yogyakarta' },
-    { icon: BiRecycle, val: stats.total_sampah_kg ? stats.total_sampah_kg / 1000 : 2.4, suf: ' Ton', label: 'Sampah Terkumpul', sub: 'per bulan, seluruh jaringan' },
+    // Placeholder for now — not yet wired to live jurnal_penimbangan/statistik data.
+    { icon: BiRecycle, val: 2.4, suf: ' Ton', label: 'Sampah Terkumpul', sub: 'per bulan, seluruh jaringan' },
     { icon: FiMap, val: stats.total_kecamatan || 14, suf: '', label: 'Kecamatan', sub: 'tertangani di Yogyakarta' },
     { icon: FiUsers, val: stats.total_nasabah || 3200, suf: '+', label: 'Nasabah Aktif', sub: 'bergabung bersama GenHi' },
   ];

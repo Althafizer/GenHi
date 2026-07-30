@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import DashboardClient from './DashboardClient';
-import type { BankSampah } from '@/lib/types';
+import type { BankSampah, JurnalPenimbangan } from '@/lib/types';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
   const [bank, setBank] = useState<BankSampah | null>(null);
   const [stats, setStats] = useState<any[]>([]);
+  const [jurnal, setJurnal] = useState<JurnalPenimbangan[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -30,13 +31,21 @@ export default function DashboardPage() {
       setBank(bankData);
 
       if (bankData) {
-        const { data: statsData } = await supabase
-          .from('statistik')
-          .select('*')
-          .eq('bank_sampah_id', bankData.id)
-          .order('periode', { ascending: false })
-          .limit(6);
+        const [{ data: statsData }, { data: jurnalData }] = await Promise.all([
+          supabase.from('statistik')
+            .select('*')
+            .eq('bank_sampah_id', bankData.id)
+            .order('periode', { ascending: false })
+            .limit(6),
+          supabase.from('jurnal_penimbangan')
+            .select('*')
+            .eq('bank_sampah_id', bankData.id)
+            .order('tanggal', { ascending: false })
+            .order('created_at', { ascending: false })
+            .limit(50),
+        ]);
         setStats(statsData || []);
+        setJurnal(jurnalData || []);
       }
 
       setLoading(false);
@@ -49,5 +58,5 @@ export default function DashboardPage() {
     </div>
   );
 
-  return <DashboardClient user={user} bank={bank} stats={stats} />;
+  return <DashboardClient user={user} bank={bank} stats={stats} jurnal={jurnal} />;
 }
