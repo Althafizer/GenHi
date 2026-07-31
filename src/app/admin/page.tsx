@@ -77,7 +77,7 @@ export default function AdminOverviewPage() {
   ];
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-8">
         <h1 className="text-2xl font-black text-white font-serif">Overview</h1>
         <p className="text-slate-400 text-sm mt-1">Ringkasan seluruh aktivitas platform GenHi</p>

@@ -60,8 +60,8 @@ export default function AdminArtikelPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="flex items-start justify-between mb-6">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="flex items-start justify-between flex-wrap gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-black text-white font-serif">Manajemen Artikel</h1>
           <p className="text-slate-400 text-sm mt-1">Buat, edit, dan kelola konten artikel GenHi</p>
@@ -73,7 +73,7 @@ export default function AdminArtikelPage() {
       </div>
 
       {/* Filter */}
-      <div className="flex gap-2 mb-5">
+      <div className="flex flex-wrap gap-2 mb-5">
         {(['semua', 'published', 'draft'] as const).map(f => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all capitalize
@@ -100,70 +100,113 @@ export default function AdminArtikelPage() {
           </Link>
         </div>
       ) : (
-        <div className="bg-slate-800/40 rounded-2xl border border-slate-700/50 overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-slate-700/50">
-                <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Artikel</th>
-                <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider hidden md:table-cell">Tag</th>
-                <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider hidden lg:table-cell">Tanggal</th>
-                <th className="px-5 py-3.5 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700/30">
-              {filtered.map(a => (
-                <tr key={a.id} className="hover:bg-slate-700/20 transition-colors">
-                  <td className="px-5 py-4">
-                    <div className="font-semibold text-white text-sm line-clamp-1">{a.judul}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{a.penulis} · {a.read_time} menit baca</div>
-                  </td>
-                  <td className="px-5 py-4 hidden md:table-cell">
-                    {a.tag ? (
-                      <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full">{a.tag}</span>
-                    ) : (
-                      <span className="text-slate-600 text-xs">–</span>
-                    )}
-                  </td>
-                  <td className="px-5 py-4">
-                    <span className={`px-2 py-0.5 text-xs font-bold rounded-full border
+        <>
+          {/* Mobile: card list */}
+          <div className="lg:hidden flex flex-col gap-3">
+            {filtered.map(a => (
+              <div key={a.id} className="bg-slate-800/40 rounded-2xl border border-slate-700/50 p-4">
+                <div className="font-semibold text-white text-sm line-clamp-2">{a.judul}</div>
+                <div className="text-xs text-slate-500 mt-0.5">{a.penulis} · {a.read_time} menit baca</div>
+                <div className="flex items-center gap-1.5 flex-wrap mt-3">
+                  <span className={`px-2 py-0.5 text-xs font-bold rounded-full border
+                    ${a.published
+                      ? 'bg-green-500/15 text-green-400 border-green-500/25'
+                      : 'bg-slate-700 text-slate-400 border-slate-600'}`}>
+                    {a.published ? 'Publik' : 'Draft'}
+                  </span>
+                  {a.tag && <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full">{a.tag}</span>}
+                </div>
+                <div className="flex gap-1.5 flex-wrap mt-3 pt-3 border-t border-slate-700/40">
+                  <button
+                    onClick={() => togglePublished(a)}
+                    disabled={processing === a.id}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40 border border-transparent
                       ${a.published
-                        ? 'bg-green-500/15 text-green-400 border-green-500/25'
-                        : 'bg-slate-700 text-slate-400 border-slate-600'}`}>
-                      {a.published ? 'Publik' : 'Draft'}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 text-slate-500 text-xs hidden lg:table-cell">
-                    {new Date(a.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="flex gap-1.5 justify-end">
-                      <button
-                        onClick={() => togglePublished(a)}
-                        disabled={processing === a.id}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40 border border-transparent
-                          ${a.published
-                            ? 'bg-slate-700/80 text-slate-300 hover:bg-amber-500/15 hover:text-amber-400'
-                            : 'bg-green-500/15 text-green-400 border-green-500/30 hover:bg-green-500/25'}`}>
-                        {processing === a.id ? '…' : a.published ? 'Jadikan Draft' : 'Publikasi'}
-                      </button>
-                      <Link href={`/admin/artikel/${a.id}/edit`}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:text-white border border-transparent transition-all">
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(a)}
-                        disabled={deleting === a.id}
-                        className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:bg-red-500/15 hover:text-red-400 border border-transparent transition-all disabled:opacity-40">
-                        {deleting === a.id ? '…' : 'Hapus'}
-                      </button>
-                    </div>
-                  </td>
+                        ? 'bg-slate-700/80 text-slate-300 hover:bg-amber-500/15 hover:text-amber-400'
+                        : 'bg-green-500/15 text-green-400 border-green-500/30 hover:bg-green-500/25'}`}>
+                    {processing === a.id ? '…' : a.published ? 'Jadikan Draft' : 'Publikasi'}
+                  </button>
+                  <Link href={`/admin/artikel/${a.id}/edit`}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:text-white border border-transparent transition-all">
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(a)}
+                    disabled={deleting === a.id}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:bg-red-500/15 hover:text-red-400 border border-transparent transition-all disabled:opacity-40">
+                    {deleting === a.id ? '…' : 'Hapus'}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden lg:block bg-slate-800/40 rounded-2xl border border-slate-700/50 overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-slate-700/50">
+                  <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Artikel</th>
+                  <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Tag</th>
+                  <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                  <th className="px-5 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal</th>
+                  <th className="px-5 py-3.5 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Aksi</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-slate-700/30">
+                {filtered.map(a => (
+                  <tr key={a.id} className="hover:bg-slate-700/20 transition-colors">
+                    <td className="px-5 py-4">
+                      <div className="font-semibold text-white text-sm line-clamp-1">{a.judul}</div>
+                      <div className="text-xs text-slate-500 mt-0.5">{a.penulis} · {a.read_time} menit baca</div>
+                    </td>
+                    <td className="px-5 py-4">
+                      {a.tag ? (
+                        <span className="px-2 py-0.5 bg-slate-700 text-slate-300 text-xs rounded-full">{a.tag}</span>
+                      ) : (
+                        <span className="text-slate-600 text-xs">–</span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4">
+                      <span className={`px-2 py-0.5 text-xs font-bold rounded-full border
+                        ${a.published
+                          ? 'bg-green-500/15 text-green-400 border-green-500/25'
+                          : 'bg-slate-700 text-slate-400 border-slate-600'}`}>
+                        {a.published ? 'Publik' : 'Draft'}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 text-slate-500 text-xs">
+                      {new Date(a.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex gap-1.5 justify-end">
+                        <button
+                          onClick={() => togglePublished(a)}
+                          disabled={processing === a.id}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all disabled:opacity-40 border border-transparent
+                            ${a.published
+                              ? 'bg-slate-700/80 text-slate-300 hover:bg-amber-500/15 hover:text-amber-400'
+                              : 'bg-green-500/15 text-green-400 border-green-500/30 hover:bg-green-500/25'}`}>
+                          {processing === a.id ? '…' : a.published ? 'Jadikan Draft' : 'Publikasi'}
+                        </button>
+                        <Link href={`/admin/artikel/${a.id}/edit`}
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:text-white border border-transparent transition-all">
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(a)}
+                          disabled={deleting === a.id}
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-700/80 text-slate-300 hover:bg-red-500/15 hover:text-red-400 border border-transparent transition-all disabled:opacity-40">
+                          {deleting === a.id ? '…' : 'Hapus'}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );

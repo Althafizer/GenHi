@@ -105,7 +105,7 @@ export default function ArtikelForm({ initialData, mode }: Props) {
   const labelCls = "block text-slate-400 text-xs font-bold mb-1.5 uppercase tracking-wider";
 
   return (
-    <div className="p-8 max-w-3xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-3xl">
       <div className="flex items-center gap-3 mb-8">
         <button onClick={() => router.back()} className="text-slate-500 hover:text-white transition-colors text-sm flex items-center gap-1"><FiArrowLeft className="w-4 h-4" /> Kembali</button>
         <h1 className="text-2xl font-black text-white font-serif">
