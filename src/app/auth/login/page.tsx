@@ -102,12 +102,12 @@ export default function LoginPage() {
             <p className="text-center text-green-500/50 text-xs">Belum punya akun?</p>
             <div className="grid grid-cols-2 gap-2">
               <Link href="/auth/register/nasabah"
-                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all inline-flex items-center justify-center gap-1.5">
-                <BiRecycle className="w-4 h-4" /> Daftar Nasabah
+                className="text-center text-xs font-bold py-3 px-2 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all flex flex-col items-center justify-center gap-1.5">
+                <BiRecycle className="w-4 h-4 shrink-0" /> Daftar Nasabah
               </Link>
               <Link href="/auth/register"
-                className="text-center text-xs font-bold py-2.5 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all inline-flex items-center justify-center gap-1.5">
-                <FiHome className="w-4 h-4" /> Daftar Bank Sampah
+                className="text-center text-xs font-bold py-3 px-2 rounded-xl bg-white/[8%] text-white/60 hover:bg-green-500/20 hover:text-green-400 border border-white/10 transition-all flex flex-col items-center justify-center gap-1.5">
+                <FiHome className="w-4 h-4 shrink-0" /> Daftar Bank Sampah
               </Link>
             </div>
           </div>
